@@ -1,10 +1,10 @@
 # WebAuthn
 
 <!--<Short Description of Extension, taken from the description element in the pom.xml> -->
-An XWiki authenticator that allow browsers to automatically authenticate on XWiki using the new WebAuthn standard
+An XWiki authenticator that allow browsers to automatically authenticate on XWiki using the new WebAuthn standard.
 
 <!--* Project Lead: [<info taken from the jira project, e.g. Vincent Massol>](<url to user profile on xwiki.org) -->
-Project Lead: [Mohammad Humayun Khan](https://www.xwiki.org/xwiki/bin/view/XWiki/DamianArado)
+* Project Lead: [Mohammad Humayun Khan](https://www.xwiki.org/xwiki/bin/view/XWiki/DamianArado)
 * [Issue Tracker](https://jira.xwiki.org/projects/WEBAUTHN)
 * Communication: [Forum](https://dev.xwiki.org/xwiki/bin/view/Community/Discuss), [Chat](https://dev.xwiki.org/xwiki/bin/view/Community/Chat)
 * [Development Practices](http://dev.xwiki.org)  
