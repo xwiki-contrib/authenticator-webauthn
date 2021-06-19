@@ -20,7 +20,6 @@
 package org.xwiki.contrib.webauthn;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,8 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xwiki.context.Execution;
+import org.xwiki.context.ExecutionContext;
 
-import com.xpn.xwiki.XWiki;
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.XWikiException;
 import com.xpn.xwiki.user.api.XWikiUser;
@@ -119,14 +118,6 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
         }
     }
 
-    private void maybeStoreRequestParameterInSession(XWikiRequest request, String key, Type targetType)
-    {
-        String value = request.get(key);
-
-        if (value != null) {
-            request.getSession().setAttribute(key, this.converter.convert(targetType, value));
-        }
-    }
 
     private void maybeStoreRequestParameterURLInSession(XWikiRequest request, String key) throws MalformedURLException
     {
