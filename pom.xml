@@ -45,19 +45,37 @@
      XWiki supports only one authenticator for the same instance 
     <xwiki.extension.namespaces>{root}</xwiki.extension.namespaces>
   </properties>
-
+-->
     <dependencies>
-    <dependency>
-      <groupId>org.xwiki.platform</groupId>
-      <artifactId>xwiki-platform-oldcore</artifactId>
-      <version>${platform.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
+      <dependency>
+        <groupId>org.xwiki.platform</groupId>
+        <artifactId>xwiki-platform-oldcore</artifactId>
+        <version>${platform.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>com.yubico</groupId>
+        <artifactId>webauthn-server-core</artifactId>
+        <version>1.9.1</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.yubico</groupId>
+        <artifactId>yubico-util</artifactId>
+        <version>1.9.1-RC2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.20</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
 
-    Test dependencies
+   <!-- Test dependencies
     <dependency>
       <groupId>org.xwiki.commons</groupId>
       <artifactId>xwiki-commons-tool-test-component</artifactId>
