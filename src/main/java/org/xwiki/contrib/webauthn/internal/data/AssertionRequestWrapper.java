@@ -22,6 +22,7 @@ package org.xwiki.contrib.webauthn.internal.data;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yubico.webauthn.AssertionRequest;
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.PublicKeyCredentialRequestOptions;
 import lombok.NonNull;
@@ -42,10 +43,10 @@ public class AssertionRequestWrapper
 
     @NonNull private final Optional<String> username;
 
-    @NonNull @JsonIgnore private final transient com.yubico.webauthn.AssertionRequest request;
+    @NonNull @JsonIgnore private final transient AssertionRequest request;
 
     public AssertionRequestWrapper(
-        @NonNull ByteArray requestId, @NonNull com.yubico.webauthn.AssertionRequest request)
+        @NonNull ByteArray requestId, @NonNull AssertionRequest request)
     {
         this.requestId = requestId;
         this.publicKeyCredentialRequestOptions = request.getPublicKeyCredentialRequestOptions();
