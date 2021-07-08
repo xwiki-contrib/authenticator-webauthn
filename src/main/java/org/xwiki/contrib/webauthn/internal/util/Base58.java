@@ -164,7 +164,8 @@ public class Base58
      * @param divisor the number to divide by (up to 256)
      * @return the remainder of the division operation
      */
-    private static byte divMod(byte[] number, int firstDigit, int base, int divisor) {
+    private static byte divMod(byte[] number, int firstDigit, int base, int divisor)
+    {
         // this is just long division which accounts for the base of the input digits
         int remainder = 0;
 

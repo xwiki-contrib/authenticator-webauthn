@@ -26,7 +26,6 @@ import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
 

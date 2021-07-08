@@ -27,6 +27,7 @@ import java.util.Optional;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.yubico.webauthn.attestation.TrustResolver;
+import com.yubico.webauthn.attestation.resolver.SimpleTrustResolver;
 
 /**
  * Resolves a metadata object whose associated certificate has signed the argument certificate,
