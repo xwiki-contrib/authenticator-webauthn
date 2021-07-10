@@ -19,51 +19,33 @@
  */
 package org.xwiki.contrib.webauthn.internal.endpoint;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
 import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
+import com.onelogin.saml2.logout.LogoutRequest;
 
 /**
- * Authentication start endpoint for WEBAUTHN
+ * Logout endpoint for WEBAUTHN
  *
  * @version $Id$
  */
 @Component
-@Named(WEBAUTHNAuthStartEndpoint.HINT)
+@Named(WEBAUTHNLogoutEndpoint.HINT)
 @Singleton
-public class WEBAUTHNAuthStartEndpoint implements WEBAUTHNEndpoint
+public class WEBAUTHNLogoutEndpoint implements WEBAUTHNEndpoint
 {
-    // Name of the endpoint: http://server/xwiki/webauthn/assertion
-    public static final String HINT = "assertion";
+    // The endpoint name
+    public static final String HINT = "logout";
 
-    @Inject
-    private Logger logger;
-
-    /**
-     * PLAN
-     *
-     * The startAssertion method returns an AssertionRequest containing the username, if any, and a
-     * PublicKeyCredentialRequestOptions instance which can be serialized to JSON and passed as the
-     * publicKey argument to navigator.credentials.get(). Again, store the AssertionRequest in
-     * temporary storage so it can be passed as an argument to
-     * RelyingParty.finishAssertion(com.yubico.webauthn.FinishAssertionOptions).
-     *
-     */
     @Override
     public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
     {
-        this.logger.debug("WEBAUTHN: Starting assertion for authentication");
-
-        // Start the assertion here
-        // The "start" methods return request objects containing the parameters to be used in the call
-        // to navigator.credentials.get()
+        // Placeholder
         return null;
     }
 }

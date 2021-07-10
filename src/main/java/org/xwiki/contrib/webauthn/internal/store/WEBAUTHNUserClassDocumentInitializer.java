@@ -17,21 +17,30 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.xwiki.contrib.webauthn.internal.endpoint;
+package org.xwiki.contrib.webauthn.internal.store;
 
-import org.xwiki.component.annotation.Role;
-import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import com.onelogin.saml2.http.HttpRequest;
+import org.xwiki.component.annotation.Component;
 
-/**
- * WEBAUTHN Endpoint.
- *
- * @version $Id$
- */
-@Role
-public interface WEBAUTHNEndpoint
+import com.xpn.xwiki.doc.AbstractMandatoryClassInitializer;
+import com.xpn.xwiki.objects.classes.BaseClass;
+
+@Component
+@Named(WEBAUTHNUser.CLASS_FULLNAME)
+@Singleton
+public class WEBAUTHNUserClassDocumentInitializer extends AbstractMandatoryClassInitializer
 {
-    Response handle(HttpRequest httpRequest, WEBAUTHNResourceReference reference) throws Exception;
+    // Default constructor
+    public WEBAUTHNUserClassDocumentInitializer()
+    {
+        super(WEBAUTHNUser.CLASS_REFERENCE, "WEBAUTHN User Class");
+    }
+
+    @Override
+    protected void createClass(BaseClass xclass)
+    {
+        xclass.addTextField(WEBAUTHNUser.FIELD_ID, "Credential ID", 30);
+    }
 }

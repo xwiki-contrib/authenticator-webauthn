@@ -37,13 +37,13 @@ import com.xpn.xwiki.web.Utils;
 import com.xpn.xwiki.web.XWikiRequest;
 
 /**
- * Authenticate a user using WebAuthn authenticator
+ * Authenticate a user using WEBAUTHN authenticator
  *
  * @version $Id$
  */
-public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
+public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthnServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WEBAUTHNServiceImpl.class);
 
     @Override
     public XWikiUser checkAuth(XWikiContext context) throws XWikiException
@@ -65,7 +65,7 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
         return user;
     }
 
-    private void checkAuthWebAuthn(XWikiContext context) throws Exception
+    private void checkAuthWEBAUTHN(XWikiContext context) throws Exception
     {
         // Check if WebAuthn is skipped or not and remember it
 
@@ -76,7 +76,7 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
     }
 
 
-    private void showLoginWebAuthn(XWikiContext context) throws Exception
+    private void showLoginWEBAUTHN(XWikiContext context) throws Exception
     {
         // Check endpoints for authentication
 

@@ -36,7 +36,7 @@ import org.xwiki.url.ExtendedURL;
 import org.xwiki.url.internal.AbstractResourceReferenceResolver;
 
 /**
- * Transform WebAuthn URL into a typed Resource Reference. The URL format handled is
+ * Transform WEBAUTHN URL into a typed Resource Reference. The URL format handled is
  * {@code http://server/context/webauthn/}.
  *
  * @version $Id$
@@ -44,10 +44,10 @@ import org.xwiki.url.internal.AbstractResourceReferenceResolver;
 @Component
 @Named("webauthn")
 @Singleton
-public class WebAuthnResourceReferenceResolver extends AbstractResourceReferenceResolver
+public class WEBAUTHNResourceReferenceResolver extends AbstractResourceReferenceResolver
 {
     @Override
-    public WebAuthnResourceReference resolve(ExtendedURL extendedURL, ResourceType resourceType,
+    public WEBAUTHNResourceReference resolve(ExtendedURL extendedURL, ResourceType resourceType,
         Map<String, Object> parameters) throws CreateResourceReferenceException, UnsupportedResourceReferenceException
     {
         String path = "";
@@ -77,7 +77,7 @@ public class WebAuthnResourceReferenceResolver extends AbstractResourceReference
             }
         }
 
-        WebAuthnResourceReference reference = new WebAuthnResourceReference(path, endpoint, pathSegments);
+        WEBAUTHNResourceReference reference = new WEBAUTHNResourceReference(path, endpoint, pathSegments);
 
         copyParameters(extendedURL, reference);
 

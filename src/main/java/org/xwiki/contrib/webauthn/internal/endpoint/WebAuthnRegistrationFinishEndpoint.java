@@ -26,19 +26,19 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
+import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 
 /**
- * Registration finish endpoint for WebAuthn
+ * Registration finish endpoint for WEBAUTHN
  *
  * @version $Id$
  */
 @Component
-@Named(WebAuthnRegistrationFinishEndpoint.HINT)
+@Named(WEBAUTHNRegistrationFinishEndpoint.HINT)
 @Singleton
-public class WebAuthnRegistrationFinishEndpoint implements WebAuthnEndpoint
+public class WEBAUTHNRegistrationFinishEndpoint implements WEBAUTHNEndpoint
 {
     // Name of the endpoint: http://server/xwiki/webauthn/registration/finish
     public static final String HINT = "registration/finish";
@@ -67,7 +67,7 @@ public class WebAuthnRegistrationFinishEndpoint implements WebAuthnEndpoint
      * policy changes and/or compromised authenticators.
      */
     @Override
-    public Response handle(HttpRequest request, WebAuthnResourceReference reference) throws Exception
+    public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
     {
         this.logger.debug("WEBAUTHN: Entering endpoint to finish registration");
 
@@ -76,5 +76,7 @@ public class WebAuthnRegistrationFinishEndpoint implements WebAuthnEndpoint
         // from the browser. These methods perform all the verification logic specified by Web Authentication,
         // but it is your responsibility as the library user to store pending requests and act upon the returned results
         // - including enforcing policies and updating databases.
+
+        return null;
     }
 }

@@ -25,13 +25,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
- * Webauthn error regarding signature count(number of assertions) for every user
+ * WEBAUTHN error regarding signature count(number of assertions) for every user
  *
  * @version $Id$
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class WebAuthnInvalidSignatureCountException extends WebAuthnAssertionFailedException
+public class WEBAUTHNInvalidSignatureCountException extends WEBAUTHNAssertionFailedException
 {
     private final ByteArray credentialId;
     private final long expectedMinimum;
@@ -44,7 +44,7 @@ public class WebAuthnInvalidSignatureCountException extends WebAuthnAssertionFai
      * @param expectedMinimum the number of signatures before the current assertion
      * @param recieved the number of signatures after the current assertion
      */
-    public WebAuthnInvalidSignatureCountException(ByteArray credentialId, long expectedMinimum, long recieved)
+    public WEBAUTHNInvalidSignatureCountException(ByteArray credentialId, long expectedMinimum, long recieved)
     {
         super(String.format("Signature count must increase. Expected minimum: %s, Recieved value: %s",
             expectedMinimum, recieved));
