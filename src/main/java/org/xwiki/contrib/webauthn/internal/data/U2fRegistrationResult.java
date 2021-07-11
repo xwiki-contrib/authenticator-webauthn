@@ -50,4 +50,15 @@ public class U2fRegistrationResult
     @NonNull
     @Builder.Default
     private final Optional<Attestation> attestationMetadata = Optional.empty();
+
+    public U2fRegistrationResult(@NonNull PublicKeyCredentialDescriptor keyId, boolean attestationTrusted,
+        @NonNull ByteArray publicKeyCose)
+    {
+        this.keyId = keyId;
+        this.attestationTrusted = attestationTrusted;
+        this.publicKeyCose = publicKeyCose;
+    }
 }
+
+
+

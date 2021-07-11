@@ -21,7 +21,6 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -36,60 +35,67 @@
   <packaging>jar</packaging>
   <description>An XWiki authenticator that allow browsers to automatically authenticate on XWiki using the new WebAuthn standard</description>
 
-  <!--
-    <properties>
+  <properties>
+    <xwiki.jacoco.instructionRatio>0.0</xwiki.jacoco.instructionRatio>
 
-      <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
-      <xwiki.issueManagement.jira.id>WEBAUTHN</xwiki.issueManagement.jira.id>
+    <xwiki.issueManagement.jira.id>WEBAUTHN</xwiki.issueManagement.jira.id>
 
-     XWiki supports only one authenticator for the same instance 
+    <xwiki.enforcer.enforce-javase-dependencies.skip>true</xwiki.enforcer.enforce-javase-dependencies.skip>
+    <xwiki.compiler.default-compile.skip>true</xwiki.compiler.default-compile.skip>
+
+    <!-- This extension needs to be installed at the farm level (ie in the root namespace) to work fine.
+         This is because is contributes a new URL Resource Handler and those need to be installed in the
+         root Component Manager (since they're executed before the wiki is extracted from the URL during
+         the URL parsing process). -->
     <xwiki.extension.namespaces>{root}</xwiki.extension.namespaces>
+
+    <xwiki.extension.category>authenticator</xwiki.extension.category>
   </properties>
--->
-    <dependencies>
-      <dependency>
-        <groupId>org.xwiki.platform</groupId>
-        <artifactId>xwiki-platform-oldcore</artifactId>
-        <version>${platform.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>com.yubico</groupId>
-        <artifactId>webauthn-server-core</artifactId>
-        <version>1.9.1</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.yubico</groupId>
-        <artifactId>webauthn-server-attestation</artifactId>
-        <version>1.9.1</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.yubico</groupId>
-        <artifactId>yubico-util</artifactId>
-        <version>1.9.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.18.20</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.yubico</groupId>
-        <artifactId>webauthn-server-core-minimal</artifactId>
-        <version>1.9.1</version>
-      </dependency>
-      <dependency>
-        <groupId>com.onelogin</groupId>
-        <artifactId>java-saml</artifactId>
-        <version>2.0.0</version>
-      </dependency>
-    </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.xwiki.platform</groupId>
+      <artifactId>xwiki-platform-oldcore</artifactId>
+      <version>${platform.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.yubico</groupId>
+      <artifactId>webauthn-server-core</artifactId>
+      <version>1.9.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.yubico</groupId>
+      <artifactId>webauthn-server-attestation</artifactId>
+      <version>1.9.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.yubico</groupId>
+      <artifactId>yubico-util</artifactId>
+      <version>1.9.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.20</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.yubico</groupId>
+      <artifactId>webauthn-server-core-minimal</artifactId>
+      <version>1.9.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.onelogin</groupId>
+      <artifactId>java-saml</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+  </dependencies>
    <!-- Test dependencies
     <dependency>
       <groupId>org.xwiki.commons</groupId>
@@ -103,6 +109,39 @@
   <!--<modules>
     <module></module>
   </modules>-->
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <arguments>-Pintegration-tests -DskipTests=true</arguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <developers>
     <developer>
@@ -119,4 +158,5 @@
     <url>https://github.com/xwiki-contrib/authenticator-webauthn</url>
     <tag>HEAD</tag>
   </scm>
+
 </project>

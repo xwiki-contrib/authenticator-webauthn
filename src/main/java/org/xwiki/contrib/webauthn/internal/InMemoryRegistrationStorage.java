@@ -17,6 +17,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+
+/*
+
+Commenting out as maven-compiler-plugin was giving errors even after excluding it in pom.xml
+
 package org.xwiki.contrib.webauthn.internal;
 
 import java.util.Collection;
@@ -206,3 +211,5 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
                 .collect(Collectors.toSet()));
     }
 }
+
+ */

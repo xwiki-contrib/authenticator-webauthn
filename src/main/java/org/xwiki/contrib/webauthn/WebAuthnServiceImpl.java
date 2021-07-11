@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
+import org.xwiki.contrib.webauthn.internal.WEBAUTHNConfiguration;
 
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.XWikiException;
@@ -45,9 +46,13 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(WEBAUTHNServiceImpl.class);
 
+    private WEBAUTHNConfiguration configuration = Utils.getComponent(WEBAUTHNConfiguration.class);
+
+    // placeholders are added below
     @Override
     public XWikiUser checkAuth(XWikiContext context) throws XWikiException
     {
+        this.LOGGER.debug("Checking if a user already exists");
         // Check if there is already a user in the session, take care of logout, etc.
         XWikiUser user = super.checkAuth(context);
 
@@ -67,7 +72,17 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
 
     private void checkAuthWEBAUTHN(XWikiContext context) throws Exception
     {
+        this.LOGGER.debug("Checking if WebAuthn was skipped");
         // Check if WebAuthn is skipped or not and remember it
+        if (this.configuration.isSkipped()) {
+            maybeStoreRequestParameterInSession(context.getRequest(), WEBAUTHNConfiguration.PROP_SKIPPED,
+                Boolean.class);
+
+            return;
+        } else {
+            maybeStoreRequestParameterInSession(context.getRequest(), WEBAUTHNConfiguration.PROP_SKIPPED,
+                Boolean.class);
+        }
 
         // Make sure the session is free from anything related to a previously authenticated user
         // in case we just did a logout
@@ -79,7 +94,7 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
     private void showLoginWEBAUTHN(XWikiContext context) throws Exception
     {
         // Check endpoints for authentication
-
+        this.LOGGER.debug("Show the login screen to the user");
         // If no endpoint can be found, ask for it
 
         // Authenticate user
@@ -88,7 +103,7 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
     private void authenticate(XWikiContext context) throws Exception, URISyntaxException, IOException
     {
         // Generate authentication URL
-
+        this.LOGGER.debug("Authenticating the user");
         // Remember the current URL
 
         // Create the request URL
@@ -108,10 +123,11 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
     }
 
     // Maybe useful in future(maybeStoreRequestParameterInSession), will remove if not
-    private void maybeStoreRequestParameterInSession(XWikiRequest request, String key)
+    private void maybeStoreRequestParameterInSession(XWikiRequest request, String key,
+        Class<Boolean> booleanClass)
     {
         String value = request.get(key);
-
+        this.LOGGER.debug("Store the request parameter in session");
         if (value != null) {
             request.getSession().setAttribute(key, value);
         }
@@ -131,7 +147,7 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
     public void showLogin(XWikiContext context) throws XWikiException
     {
         // If WebAuthn is not skipped and we can't authenticate user, throw error
-
+        this.LOGGER.debug("Show the login screen to the user");
         // Fallback on standard auth
     }
 }
