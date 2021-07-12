@@ -148,6 +148,18 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
     {
         // If WebAuthn is not skipped and we can't authenticate user, throw error
         this.LOGGER.debug("Show the login screen to the user");
-        // Fallback on standard auth
+
+        if (!this.configuration.isSkipped()) {
+            try {
+                showLoginWEBAUTHN(context);
+            } catch (Exception e) {
+                LOGGER.error("Failed to show WEBAUTHN login", e);
+
+                // Fallback on standard auth
+                super.showLogin(context);
+            }
+        } else {
+            super.showLogin(context);
+        }
     }
 }
