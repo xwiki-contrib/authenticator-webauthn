@@ -31,7 +31,7 @@
 
   <artifactId>authenticator-webauthn</artifactId>
   <name>WebAuthn</name>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>An XWiki authenticator that allow browsers to automatically authenticate on XWiki using the new WebAuthn standard</description>
 
@@ -158,6 +158,7 @@
     <connection>scm:git:git://github.com/xwiki-contrib/authenticator-webauthn.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/authenticator-webauthn.git</developerConnection>
     <url>https://github.com/xwiki-contrib/authenticator-webauthn</url>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
