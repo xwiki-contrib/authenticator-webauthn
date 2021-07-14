@@ -158,7 +158,6 @@
     <connection>scm:git:git://github.com/xwiki-contrib/authenticator-webauthn.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/authenticator-webauthn.git</developerConnection>
     <url>https://github.com/xwiki-contrib/authenticator-webauthn</url>
-    <tag>HEAD</tag>
   </scm>
 
 </project>
