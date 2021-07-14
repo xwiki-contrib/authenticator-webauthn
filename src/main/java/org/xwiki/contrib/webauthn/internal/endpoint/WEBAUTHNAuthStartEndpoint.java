@@ -26,19 +26,19 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 
 /**
- * Authentication start endpoint for WEBAUTHN
+ * Authentication start endpoint for WebAuthn
  *
  * @version $Id$
  */
 @Component
-@Named(WEBAUTHNAuthStartEndpoint.HINT)
+@Named(WebAuthnAuthStartEndpoint.HINT)
 @Singleton
-public class WEBAUTHNAuthStartEndpoint implements WEBAUTHNEndpoint
+public class WebAuthnAuthStartEndpoint implements WebAuthnEndpoint
 {
     // Name of the endpoint: http://server/xwiki/webauthn/assertion
     public static final String HINT = "assertion";
@@ -57,9 +57,9 @@ public class WEBAUTHNAuthStartEndpoint implements WEBAUTHNEndpoint
      *
      */
     @Override
-    public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
+    public Response handle(HttpRequest request, WebAuthnResourceReference reference) throws Exception
     {
-        this.logger.debug("WEBAUTHN: Starting assertion for authentication");
+        this.logger.debug("WebAuthn: Starting assertion for authentication");
 
         // Start the assertion here
         // The "start" methods return request objects containing the parameters to be used in the call

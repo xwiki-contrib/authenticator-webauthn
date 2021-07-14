@@ -20,17 +20,17 @@
 package org.xwiki.contrib.webauthn.internal.exception;
 
 /**
- * WEBAUTHN error regarding Assertion
+ * WebAuthn error regarding Assertion
  *
  * @version $Id$
  */
-public class WEBAUTHNAssertionFailedException extends Exception
+public class WebAuthnAssertionFailedException extends Exception
 {
-    public WEBAUTHNAssertionFailedException(IllegalArgumentException e) {
+    public WebAuthnAssertionFailedException(IllegalArgumentException e) {
         super(e);
     }
 
-    public WEBAUTHNAssertionFailedException(String message) {
+    public WebAuthnAssertionFailedException(String message) {
         super(message);
     }
 }

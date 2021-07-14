@@ -24,26 +24,26 @@ import javax.inject.Singleton;
 
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 import com.onelogin.saml2.logout.LogoutRequest;
 
 /**
- * Logout endpoint for WEBAUTHN
+ * Logout endpoint for WebAuthn
  *
  * @version $Id$
  */
 @Component
-@Named(WEBAUTHNLogoutEndpoint.HINT)
+@Named(WebAuthnLogoutEndpoint.HINT)
 @Singleton
-public class WEBAUTHNLogoutEndpoint implements WEBAUTHNEndpoint
+public class WebAuthnLogoutEndpoint implements WebAuthnEndpoint
 {
     // The endpoint name
     public static final String HINT = "logout";
 
     @Override
-    public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
+    public Response handle(HttpRequest request, WebAuthnResourceReference reference) throws Exception
     {
         // Placeholder
         return null;

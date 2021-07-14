@@ -28,19 +28,19 @@ import com.xpn.xwiki.doc.AbstractMandatoryClassInitializer;
 import com.xpn.xwiki.objects.classes.BaseClass;
 
 @Component
-@Named(WEBAUTHNUser.CLASS_FULLNAME)
+@Named(WebAuthnUser.CLASS_FULLNAME)
 @Singleton
-public class WEBAUTHNUserClassDocumentInitializer extends AbstractMandatoryClassInitializer
+public class WebAuthnUserClassDocumentInitializer extends AbstractMandatoryClassInitializer
 {
     // Default constructor
-    public WEBAUTHNUserClassDocumentInitializer()
+    public WebAuthnUserClassDocumentInitializer()
     {
-        super(WEBAUTHNUser.CLASS_REFERENCE, "WEBAUTHN User Class");
+        super(WebAuthnUser.CLASS_REFERENCE, "WebAuthn User Class");
     }
 
     @Override
     protected void createClass(BaseClass xclass)
     {
-        xclass.addTextField(WEBAUTHNUser.FIELD_ID, "Credential ID", 30);
+        xclass.addTextField(WebAuthnUser.FIELD_ID, "Credential ID", 30);
     }
 }

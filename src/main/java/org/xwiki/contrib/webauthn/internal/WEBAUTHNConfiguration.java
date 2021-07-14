@@ -38,46 +38,46 @@ import org.xwiki.container.Container;
 import org.xwiki.container.Request;
 import org.xwiki.container.Session;
 import org.xwiki.container.servlet.ServletSession;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNAuthFinishEndpoint;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNAuthStartEndpoint;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNEndpoint;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNLogoutEndpoint;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNRegistrationFinishEndpoint;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNRegistrationStartEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnAuthFinishEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnAuthStartEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnLogoutEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnRegistrationFinishEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnRegistrationStartEndpoint;
 import org.xwiki.properties.ConverterManager;
 
 /**
- * WEBAUTHN based configuration
+ * WebAuthn based configuration
  *
  * @version $Id$
  */
 @Singleton
-@Component(roles = WEBAUTHNConfiguration.class)
-public class WEBAUTHNConfiguration
+@Component(roles = WebAuthnConfiguration.class)
+public class WebAuthnConfiguration
 {
     /**
-     * The prefix used for WEBAUTHN configuration properties.
+     * The prefix used for WebAuthn configuration properties.
      */
     public static final String PREFIX_PROP = "webauthn.";
 
     public static final String PROPPREFIX_ENDPOINT = "webauthn.endpoint.";
 
     public static final String PROP_ENDPOINT_START_REGISTER = PROPPREFIX_ENDPOINT +
-        "WEBAUTHNRegistrationStartEndpoint.HINT";
+        "WebAuthnRegistrationStartEndpoint.HINT";
 
     public static final String PROP_ENDPOINT_FINISH_REGISTER = PROPPREFIX_ENDPOINT +
-        "WEBAUTHNRegistrationFinishEndpoint.HINT";
+        "WebAuthnRegistrationFinishEndpoint.HINT";
 
     public static final String PROP_ENDPOINT_START_AUTH = PROPPREFIX_ENDPOINT +
-        "WEBAUTHNAuthStartEndpoint.HINT";
+        "WebAuthnAuthStartEndpoint.HINT";
 
     public static final String PROP_ENDPOINT_FINISH_AUTH = PROPPREFIX_ENDPOINT +
-        "WEBAUTHNAuthFinishEndpoint.HINT";
+        "WebAuthnAuthFinishEndpoint.HINT";
 
     public static final String PROP_SKIPPED = "webauthn.skipped";
 
     @Inject
-    private WEBAUTHNManager manager;
+    private WebAuthnManager manager;
 
     @Inject
     private Logger logger;
@@ -214,7 +214,7 @@ public class WEBAUTHNConfiguration
         return this.configuration.getProperty(key, def);
     }
 
-    private WEBAUTHNEndpoint getEndPoint(String hint) throws URISyntaxException
+    private WebAuthnEndpoint getEndPoint(String hint) throws URISyntaxException
     {
         String uriString = getProperty(PROPPREFIX_ENDPOINT + hint, String.class);
 
@@ -259,29 +259,29 @@ public class WEBAUTHNConfiguration
         return null;
     }
 
-    public WEBAUTHNEndpoint getWEBAUTHNRegistrationStartEndpoint() throws URISyntaxException
+    public WebAuthnEndpoint getWebAuthnRegistrationStartEndpoint() throws URISyntaxException
     {
-        return getEndPoint(WEBAUTHNRegistrationStartEndpoint.HINT);
+        return getEndPoint(WebAuthnRegistrationStartEndpoint.HINT);
     }
 
-    public WEBAUTHNEndpoint getWEBAUTHNRegistrationFinishEndpoint() throws URISyntaxException
+    public WebAuthnEndpoint getWebAuthnRegistrationFinishEndpoint() throws URISyntaxException
     {
-        return getEndPoint(WEBAUTHNRegistrationFinishEndpoint.HINT);
+        return getEndPoint(WebAuthnRegistrationFinishEndpoint.HINT);
     }
 
-    public WEBAUTHNEndpoint getWEBAUTHNAuthStartEndpoint() throws URISyntaxException
+    public WebAuthnEndpoint getWebAuthnAuthStartEndpoint() throws URISyntaxException
     {
-        return getEndPoint(WEBAUTHNAuthStartEndpoint.HINT);
+        return getEndPoint(WebAuthnAuthStartEndpoint.HINT);
     }
 
-    public WEBAUTHNEndpoint getWEBAUTHNAuthFinishEndpoint() throws URISyntaxException
+    public WebAuthnEndpoint getWEBAUTHNAuthFinishEndpoint() throws URISyntaxException
     {
-        return getEndPoint(WEBAUTHNAuthFinishEndpoint.HINT);
+        return getEndPoint(WebAuthnAuthFinishEndpoint.HINT);
     }
 
-    public WEBAUTHNEndpoint getWEBAUTHNLogoutEndpoint() throws URISyntaxException
+    public WebAuthnEndpoint getWebAuthnLogoutEndpoint() throws URISyntaxException
     {
-        return getEndPoint(WEBAUTHNLogoutEndpoint.HINT);
+        return getEndPoint(WebAuthnLogoutEndpoint.HINT);
     }
 
     public boolean isSkipped()

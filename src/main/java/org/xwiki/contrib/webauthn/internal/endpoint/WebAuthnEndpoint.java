@@ -21,17 +21,17 @@ package org.xwiki.contrib.webauthn.internal.endpoint;
 
 import org.xwiki.component.annotation.Role;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 
 /**
- * WEBAUTHN Endpoint.
+ * WebAuthn Endpoint.
  *
  * @version $Id$
  */
 @Role
-public interface WEBAUTHNEndpoint
+public interface WebAuthnEndpoint
 {
-    Response handle(HttpRequest httpRequest, WEBAUTHNResourceReference reference) throws Exception;
+    Response handle(HttpRequest httpRequest, WebAuthnResourceReference reference) throws Exception;
 }

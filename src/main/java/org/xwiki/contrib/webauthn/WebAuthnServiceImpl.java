@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xwiki.context.Execution;
 import org.xwiki.context.ExecutionContext;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNConfiguration;
+import org.xwiki.contrib.webauthn.internal.WebAuthnConfiguration;
 
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.XWikiException;
@@ -38,15 +38,15 @@ import com.xpn.xwiki.web.Utils;
 import com.xpn.xwiki.web.XWikiRequest;
 
 /**
- * Authenticate a user using WEBAUTHN authenticator
+ * Authenticate a user using WebAuthn authenticator
  *
  * @version $Id$
  */
-public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
+public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WEBAUTHNServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthnServiceImpl.class);
 
-    private WEBAUTHNConfiguration configuration = Utils.getComponent(WEBAUTHNConfiguration.class);
+    private WebAuthnConfiguration configuration = Utils.getComponent(WebAuthnConfiguration.class);
 
     // placeholders are added below
     @Override
@@ -70,17 +70,17 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
         return user;
     }
 
-    private void checkAuthWEBAUTHN(XWikiContext context) throws Exception
+    private void checkAuthWebAuthn(XWikiContext context) throws Exception
     {
         this.LOGGER.debug("Checking if WebAuthn was skipped");
         // Check if WebAuthn is skipped or not and remember it
         if (this.configuration.isSkipped()) {
-            maybeStoreRequestParameterInSession(context.getRequest(), WEBAUTHNConfiguration.PROP_SKIPPED,
+            maybeStoreRequestParameterInSession(context.getRequest(), WebAuthnConfiguration.PROP_SKIPPED,
                 Boolean.class);
 
             return;
         } else {
-            maybeStoreRequestParameterInSession(context.getRequest(), WEBAUTHNConfiguration.PROP_SKIPPED,
+            maybeStoreRequestParameterInSession(context.getRequest(), WebAuthnConfiguration.PROP_SKIPPED,
                 Boolean.class);
         }
 
@@ -91,7 +91,7 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
     }
 
 
-    private void showLoginWEBAUTHN(XWikiContext context) throws Exception
+    private void showLoginWebAuthn(XWikiContext context) throws Exception
     {
         // Check endpoints for authentication
         this.LOGGER.debug("Show the login screen to the user");
@@ -151,7 +151,7 @@ public class WEBAUTHNServiceImpl extends XWikiAuthServiceImpl
 
         if (!this.configuration.isSkipped()) {
             try {
-                showLoginWEBAUTHN(context);
+                showLoginWebAuthn(context);
             } catch (Exception e) {
                 LOGGER.error("Failed to show WEBAUTHN login", e);
 

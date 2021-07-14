@@ -28,23 +28,23 @@ import org.xwiki.model.reference.DocumentReference;
  * </p>
  * <ul>
  * <li>source: the modified instance of com.xpn.xwiki.doc.XWikiDocument</li>
- * <li>data: an {@link WEBAUTHNUserEventData} instance containing various info about the new webauthn credentials for a
+ * <li>data: an {@link WebAuthnUserEventData} instance containing various info about the new webauthn credentials for a
  * standard xwiki user</li>
  * </ul>
  *
  * @version $Id$
  */
-public class WEBAUTHNUserUpdated extends AbstractWEBAUTHNUserEvent
+public class WebAuthnUserUpdated extends AbstractWebAuthnUserEvent
 {
     // Matches all users
-    public WEBAUTHNUserUpdated()
+    public WebAuthnUserUpdated()
     {
     }
 
     /**
      * @param user the user for which the event has been sent
      */
-    public WEBAUTHNUserUpdated(DocumentReference user)
+    public WebAuthnUserUpdated(DocumentReference user)
     {
         super(user);
     }

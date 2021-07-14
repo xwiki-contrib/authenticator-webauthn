@@ -36,7 +36,7 @@ import org.xwiki.container.Response;
 import org.xwiki.container.servlet.ServletRequest;
 import org.xwiki.container.servlet.ServletResponse;
 import org.xwiki.context.Execution;
-import org.xwiki.contrib.webauthn.internal.endpoint.WEBAUTHNEndpoint;
+import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnEndpoint;
 import org.xwiki.resource.AbstractResourceReferenceHandler;
 import org.xwiki.resource.ResourceReference;
 import org.xwiki.resource.ResourceReferenceHandlerChain;
@@ -54,14 +54,14 @@ import com.xpn.xwiki.web.XWikiServletRequest;
 import com.xpn.xwiki.web.XWikiServletResponse;
 
 /**
- * WEBAUTHN entry point.
+ * WebAuthn entry point.
  *
  * @version $Id$
  */
 @Component
 @Named("webauthn")
 @Singleton
-public class WEBAUTHNResourceReferenceHandler extends AbstractResourceReferenceHandler<ResourceType>
+public class WebAuthnResourceReferenceHandler extends AbstractResourceReferenceHandler<ResourceType>
 {
     @Inject
     private Container container;
@@ -70,7 +70,7 @@ public class WEBAUTHNResourceReferenceHandler extends AbstractResourceReferenceH
     private ComponentManager componentManager;
 
     @Inject
-    private WEBAUTHNEndpoint unknown;
+    private WebAuthnEndpoint unknown;
 
     @Inject
     private Execution execution;
@@ -78,14 +78,14 @@ public class WEBAUTHNResourceReferenceHandler extends AbstractResourceReferenceH
     @Override
     public List<ResourceType> getSupportedResourceReferences()
     {
-        return Arrays.asList(WEBAUTHNResourceReference.TYPE);
+        return Arrays.asList(WebAuthnResourceReference.TYPE);
     }
 
     @Override
     public void handle(ResourceReference resourceReference, ResourceReferenceHandlerChain chain)
         throws ResourceReferenceHandlerException
     {
-        WEBAUTHNResourceReference reference = (WEBAUTHNResourceReference) resourceReference;
+        WebAuthnResourceReference reference = (WebAuthnResourceReference) resourceReference;
 
         Request request = this.container.getRequest();
 
@@ -138,7 +138,7 @@ public class WEBAUTHNResourceReferenceHandler extends AbstractResourceReferenceH
         }
     }
 
-    private void handle(WEBAUTHNResourceReference reference, HttpServletRequest httpServletRequest,
+    private void handle(WebAuthnResourceReference reference, HttpServletRequest httpServletRequest,
         HttpServletResponse servletResponse) throws Exception
     {
         // Convert from Servlet http request to generic http request
@@ -146,8 +146,8 @@ public class WEBAUTHNResourceReferenceHandler extends AbstractResourceReferenceH
 
         Response response;
 
-        if (this.componentManager.hasComponent(WEBAUTHNEndpoint.class, reference.getEndpoint())) {
-            WEBAUTHNEndpoint endpoint = this.componentManager.getInstance(WEBAUTHNEndpoint.class,
+        if (this.componentManager.hasComponent(WebAuthnEndpoint.class, reference.getEndpoint())) {
+            WebAuthnEndpoint endpoint = this.componentManager.getInstance(WebAuthnEndpoint.class,
                 reference.getPath());
 
             response = endpoint.handle(httpRequest, reference);

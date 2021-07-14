@@ -20,13 +20,13 @@
 package org.xwiki.contrib.webauthn.internal.exception;
 
 /**
- * WEBAUTHN error regarding Registration
+ * WebAuthn error regarding Registration
  *
  * @version $Id$
  */
-public class WEBAUTHNRegistrationFailedException extends Exception
+public class WebAuthnRegistrationFailedException extends Exception
 {
-    public WEBAUTHNRegistrationFailedException(IllegalArgumentException e) {
+    public WebAuthnRegistrationFailedException(IllegalArgumentException e) {
         super(e);
     }
 }

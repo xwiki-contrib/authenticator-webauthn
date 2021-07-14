@@ -19,6 +19,6 @@
  */
 package org.xwiki.contrib.webauthn.internal.event;
 
-public class WEBAUTHNUserEventData
+public class WebAuthnUserEventData
 {
 }

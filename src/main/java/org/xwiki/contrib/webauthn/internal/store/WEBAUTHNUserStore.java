@@ -26,28 +26,28 @@ import com.xpn.xwiki.XWikiException;
 import com.xpn.xwiki.doc.XWikiDocument;
 
 /**
- * Helper to manager WEBAUTHN profiles XClass and XObject.
+ * Helper to manager WebAuthn profiles XClass and XObject.
  *
  * @version $Id$
  */
 @Role
-public interface WEBAUTHNUserStore
+public interface WebAuthnUserStore
 {
     /**
-     * Add or update WEBAUTHN metadata in the user profile
+     * Add or update WebAuthn metadata in the user profile
      *
-     * @param userDocument the document in which the WEBAUTHN user is stored
-     * @param id the id associated with the WEBAUTHN credentials
+     * @param userDocument the document in which the WebAuthn user is stored
+     * @param id the id associated with the WebAuthn credentials
      * TODO: Add more properties here definitely
      **/
-    boolean updateWEBAUTHNUser(XWikiDocument userDocument, String id);
+    boolean updateWebAuthnUser(XWikiDocument userDocument, String id);
 
     /**
-     * Search in the existing XWiki user if one already has WEBAUTHN credentials associated with them
+     * Search in the existing XWiki user if one already has WebAuthn credentials associated with them
      *
-     * @param id the id associated with the WEBAUTHN credentials
+     * @param id the id associated with the WebAuthn credentials
      * TODO: Add more properties here definitely
-     * @return the document of the user profile which already contains theses WEBAUTHN credentials
+     * @return the document of the user profile which already contains theses WebAuthn credentials
      * @throws XWikiException when failing the get the document
      * @throws QueryException when failing to search for the document
      */

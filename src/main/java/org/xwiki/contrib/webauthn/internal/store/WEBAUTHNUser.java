@@ -26,28 +26,28 @@ import org.xwiki.model.reference.LocalDocumentReference;
 import com.xpn.xwiki.XWiki;
 
 /**
- * To manipulate WEBAUTHN metadata stored in a user profile.
+ * To manipulate WebAuthn metadata stored in a user profile.
  *
  * @version $Id$
  */
-public class WEBAUTHNUser
+public class WebAuthnUser
 {
     /**
-     * The String reference of the class defining the object which contains the WEBAUTHN metadata in the user profile.
+     * The String reference of the class defining the object which contains the WebAuthn metadata in the user profile.
      */
-    public static final String CLASS_FULLNAME = "XWiki.WEBAUTHN.UserClass";
+    public static final String CLASS_FULLNAME = "XWiki.WebAuthn.UserClass";
 
     /**
-     * The reference of the class defining the object which contains the WEBAUTHN metadata in the user profile.
+     * The reference of the class defining the object which contains the WebAuthn metadata in the user profile.
      */
     public static final LocalDocumentReference CLASS_REFERENCE =
-        new LocalDocumentReference(Arrays.asList(XWiki.SYSTEM_SPACE, "WEBAUTHN"), "UserClass");
+        new LocalDocumentReference(Arrays.asList(XWiki.SYSTEM_SPACE, "WebAuthn"), "UserClass");
 
 
     /**
-     * The name of the property containing the WEBAUTHN credential id.
+     * The name of the property containing the WebAuthn credential id.
      */
     public static final String FIELD_ID = "id";
 
-    // TODO: add different properties regarding WEBAUTHN
+    // TODO: add different properties regarding WebAuthn
 }

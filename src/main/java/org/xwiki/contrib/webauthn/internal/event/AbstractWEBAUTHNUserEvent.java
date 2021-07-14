@@ -23,23 +23,23 @@ import org.xwiki.model.reference.DocumentReference;
 import org.xwiki.observation.event.Event;
 
 /**
- * Base class for WEBAUTHN users related events.
+ * Base class for WebAuthn users related events.
  *
  * @version $Id$
  */
-public abstract class AbstractWEBAUTHNUserEvent implements Event
+public abstract class AbstractWebAuthnUserEvent implements Event
 {
     private DocumentReference user;
 
     // Match all the users
-    public AbstractWEBAUTHNUserEvent()
+    public AbstractWebAuthnUserEvent()
     {
     }
 
     /**
      * @param user the user for which the event has been sent
      */
-    public AbstractWEBAUTHNUserEvent(DocumentReference user)
+    public AbstractWebAuthnUserEvent(DocumentReference user)
     {
         this.user = user;
     }
@@ -55,8 +55,8 @@ public abstract class AbstractWEBAUTHNUserEvent implements Event
     @Override
     public boolean matches(Object otherEvent)
     {
-        if (otherEvent instanceof AbstractWEBAUTHNUserEvent) {
-            return getUser() == null || getUser().equals(((AbstractWEBAUTHNUserEvent) otherEvent).getUser());
+        if (otherEvent instanceof AbstractWebAuthnUserEvent) {
+            return getUser() == null || getUser().equals(((AbstractWebAuthnUserEvent) otherEvent).getUser());
         }
 
         return false;

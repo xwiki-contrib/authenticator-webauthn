@@ -26,19 +26,19 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 
 /**
- * Registration start endpoint for WEBAUTHN
+ * Registration start endpoint for WebAuthn
  *
  * @version $Id$
  */
 @Component
-@Named(WEBAUTHNRegistrationStartEndpoint.HINT)
+@Named(WebAuthnRegistrationStartEndpoint.HINT)
 @Singleton
-public class WEBAUTHNRegistrationStartEndpoint implements WEBAUTHNEndpoint
+public class WebAuthnRegistrationStartEndpoint implements WebAuthnEndpoint
 {
     // Name of the endpoint: http://server/xwiki/webauthn/registration
     public static final String HINT = "registration";
@@ -61,9 +61,9 @@ public class WEBAUTHNRegistrationStartEndpoint implements WEBAUTHNEndpoint
      * RelyingParty.finishRegistration(FinishRegistrationOptions).
      */
     @Override
-    public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
+    public Response handle(HttpRequest request, WebAuthnResourceReference reference) throws Exception
     {
-        this.logger.debug("WEBAUTHN: Starting registration");
+        this.logger.debug("WebAuthn: Starting registration");
 
         // Start the registration of webauthn credentials here
         // The "start" methods return request objects containing the parameters to be used in the call

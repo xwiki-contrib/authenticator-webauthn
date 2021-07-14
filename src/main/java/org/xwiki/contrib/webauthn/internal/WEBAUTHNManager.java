@@ -39,19 +39,19 @@ import com.onelogin.saml2.servlet.ServletUtils;
 import com.xpn.xwiki.XWikiContext;
 
 /**
- * Main utility for WEBAUTHN
+ * Main utility for WebAuthn
  *
  * @version $Id$
  */
-@Component(roles = WEBAUTHNManager.class)
+@Component(roles = WebAuthnManager.class)
 @Singleton
-public class WEBAUTHNManager implements Initializable
+public class WebAuthnManager implements Initializable
 {
     @Inject
     private Provider<XWikiContext> xcontextProvider;
 
     @Inject
-    private WEBAUTHNConfiguration configuration;
+    private WebAuthnConfiguration configuration;
 
     @Inject
     private Logger logger;

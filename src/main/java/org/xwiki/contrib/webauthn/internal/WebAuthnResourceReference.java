@@ -25,14 +25,14 @@ import org.xwiki.resource.AbstractResourceReference;
 import org.xwiki.resource.ResourceType;
 
 /**
- * Dummy type for WEBAUTHN entry point.
+ * Dummy type for WebAuthn entry point.
  *
  * @version $Id$
  */
-public class WEBAUTHNResourceReference extends AbstractResourceReference
+public class WebAuthnResourceReference extends AbstractResourceReference
 {
     /**
-     * Represents a WEBAUTHN Resource Type.
+     * Represents a WebAuthn Resource Type.
      */
     public static final ResourceType TYPE = new ResourceType("webauthn");
 
@@ -49,7 +49,7 @@ public class WEBAUTHNResourceReference extends AbstractResourceReference
      * @param endpoint the target endpoint
      * @param pathSegments the rest of the path
      */
-    public WEBAUTHNResourceReference(String path, String endpoint, List<String> pathSegments)
+    public WebAuthnResourceReference(String path, String endpoint, List<String> pathSegments)
     {
         setType(TYPE);
         this.path = path;

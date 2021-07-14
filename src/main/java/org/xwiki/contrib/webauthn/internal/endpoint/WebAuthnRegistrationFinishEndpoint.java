@@ -26,19 +26,19 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 
 /**
- * Registration finish endpoint for WEBAUTHN
+ * Registration finish endpoint for WebAuthn
  *
  * @version $Id$
  */
 @Component
-@Named(WEBAUTHNRegistrationFinishEndpoint.HINT)
+@Named(WebAuthnRegistrationFinishEndpoint.HINT)
 @Singleton
-public class WEBAUTHNRegistrationFinishEndpoint implements WEBAUTHNEndpoint
+public class WebAuthnRegistrationFinishEndpoint implements WebAuthnEndpoint
 {
     // Name of the endpoint: http://server/xwiki/webauthn/registration/finish
     public static final String HINT = "registration/finish";
@@ -67,9 +67,9 @@ public class WEBAUTHNRegistrationFinishEndpoint implements WEBAUTHNEndpoint
      * policy changes and/or compromised authenticators.
      */
     @Override
-    public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
+    public Response handle(HttpRequest request, WebAuthnResourceReference reference) throws Exception
     {
-        this.logger.debug("WEBAUTHN: Entering endpoint to finish registration");
+        this.logger.debug("WebAuthn: Entering endpoint to finish registration");
 
         // Continue and finish the registration of webauthn credentials for an xwiki user here
         // the "finish" methods expect a pair of such a request object and the response object returned

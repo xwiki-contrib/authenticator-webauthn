@@ -26,19 +26,19 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.container.Response;
-import org.xwiki.contrib.webauthn.internal.WEBAUTHNResourceReference;
+import org.xwiki.contrib.webauthn.internal.WebAuthnResourceReference;
 
 import com.onelogin.saml2.http.HttpRequest;
 
 /**
- * Authentication finish endpoint for WEBAUTHN
+ * Authentication finish endpoint for WebAuthn
  *
  * @version $Id$
  */
 @Component
-@Named(WEBAUTHNAuthFinishEndpoint.HINT)
+@Named(WebAuthnAuthFinishEndpoint.HINT)
 @Singleton
-public class WEBAUTHNAuthFinishEndpoint implements WEBAUTHNEndpoint
+public class WebAuthnAuthFinishEndpoint implements WebAuthnEndpoint
 {
     // Name of the endpoint: http://server/xwiki/webauthn/assertion/finish
     public static final String HINT = "assertion/finish";
@@ -62,9 +62,9 @@ public class WEBAUTHNAuthFinishEndpoint implements WEBAUTHNEndpoint
      */
 
     @Override
-    public Response handle(HttpRequest request, WEBAUTHNResourceReference reference) throws Exception
+    public Response handle(HttpRequest request, WebAuthnResourceReference reference) throws Exception
     {
-        this.logger.debug("WEBAUTHN: Entering endpoint for finishing assertion for authentication");
+        this.logger.debug("WebAuthn: Entering endpoint for finishing assertion for authentication");
 
         // Continue and finish the assertion here
         // the "finish" methods expect a pair of such a request object and the response object returned
