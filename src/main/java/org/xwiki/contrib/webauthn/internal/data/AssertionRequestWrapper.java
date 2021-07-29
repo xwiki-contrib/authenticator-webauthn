@@ -29,24 +29,28 @@ import lombok.NonNull;
 import lombok.Value;
 
 /**
- * Properties associated with a WebAuthn assertion request for a username
+ * Properties associated with a WebAuthn assertion request for a username.
  *
  * @version $Id$
  */
 @Value
 public class AssertionRequestWrapper
 {
+    @NonNull ByteArray requestId;
 
-    @NonNull private final ByteArray requestId;
+    @NonNull PublicKeyCredentialRequestOptions publicKeyCredentialRequestOptions;
 
-    @NonNull private final PublicKeyCredentialRequestOptions publicKeyCredentialRequestOptions;
+    @NonNull Optional<String> username;
 
-    @NonNull private final Optional<String> username;
+    @NonNull @JsonIgnore transient AssertionRequest request;
 
-    @NonNull @JsonIgnore private final transient AssertionRequest request;
-
-    public AssertionRequestWrapper(
-        @NonNull ByteArray requestId, @NonNull AssertionRequest request)
+    /**
+     * Instantiates a new Assertion request wrapper.
+     *
+     * @param requestId the request id
+     * @param request the request
+     */
+    public AssertionRequestWrapper(@NonNull ByteArray requestId, @NonNull AssertionRequest request)
     {
         this.requestId = requestId;
         this.publicKeyCredentialRequestOptions = request.getPublicKeyCredentialRequestOptions();

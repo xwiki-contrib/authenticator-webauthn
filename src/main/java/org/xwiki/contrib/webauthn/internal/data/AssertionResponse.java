@@ -28,7 +28,7 @@ import com.yubico.webauthn.data.PublicKeyCredential;
 import lombok.Value;
 
 /**
- * Properties associated with a WebAuthn assertion response
+ * Properties associated with a WebAuthn assertion response.
  *
  * @version $Id$
  */
@@ -36,16 +36,19 @@ import lombok.Value;
 @JsonIgnoreProperties({"sessionToken"})
 public class AssertionResponse
 {
+    ByteArray requestId;
 
-    private final ByteArray requestId;
+    PublicKeyCredential<AuthenticatorAssertionResponse, ClientAssertionExtensionOutputs> credential;
 
-    private final PublicKeyCredential<AuthenticatorAssertionResponse, ClientAssertionExtensionOutputs> credential;
-
-    public AssertionResponse(
-        @JsonProperty("requestId") ByteArray requestId,
-        @JsonProperty("credential")
-            PublicKeyCredential<AuthenticatorAssertionResponse, ClientAssertionExtensionOutputs>
-            credential)
+    /**
+     * Instantiates a new Assertion response.
+     *
+     * @param requestId the request id
+     * @param credential the public-key credential
+     */
+    public AssertionResponse(@JsonProperty("requestId") ByteArray requestId,
+        @JsonProperty("credential") PublicKeyCredential<AuthenticatorAssertionResponse,
+            ClientAssertionExtensionOutputs> credential)
     {
         this.requestId = requestId;
         this.credential = credential;

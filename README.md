@@ -9,12 +9,12 @@ An XWiki authenticator that allow browsers to automatically authenticate on XWik
 * [Issue Tracker](https://jira.xwiki.org/projects/WEBAUTHN)
 * Communication: [Forum](https://dev.xwiki.org/xwiki/bin/view/Community/Discuss), [Chat](https://dev.xwiki.org/xwiki/bin/view/Community/Chat)
 * [Development Practices](http://dev.xwiki.org)  
+* Minimal XWiki version supported: XWiki 11.10
 * License: LGPL 2.1 
 * Translations: N/A 
 * Sonar Dashboard: N/A 
 * Continuous Integration Status: N/A 
 
-<!--* Minimal XWiki version supported: <taken from the pom.xml, e.g. XWiki 6.4.7> -->
 <!--<if translation is used> 
 * [Translations](<url on l10n to translations for this extension>) 
 </if translation is used> -->

@@ -25,18 +25,30 @@ import com.yubico.webauthn.data.ByteArray;
 import lombok.NonNull;
 import lombok.Value;
 
+/**
+ * The webauthn credential response generated after a successful registration request.
+ *
+ * @version $Id$
+ */
 @Value
 public class U2fCredentialResponse
 {
+    ByteArray keyHandle;
 
-    private final ByteArray keyHandle;
+    ByteArray publicKey;
 
-    private final ByteArray publicKey;
+    ByteArray attestationCertAndSignature;
 
-    private final ByteArray attestationCertAndSignature;
+    ByteArray clientDataJSON;
 
-    private final ByteArray clientDataJSON;
-
+    /**
+     * Instantiates a new U2f credential response.
+     *
+     * @param keyHandle key handle for the public-key
+     * @param publicKey the public-key credential
+     * @param attestationCertAndSignature the attestation certificate and signature
+     * @param clientDataJSON the data passed from client to authenticator in order to associate a new credential
+     */
     @JsonCreator
     public U2fCredentialResponse(
         @NonNull @JsonProperty("keyHandle") ByteArray keyHandle,

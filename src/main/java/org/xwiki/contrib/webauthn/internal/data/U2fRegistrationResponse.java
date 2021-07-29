@@ -27,16 +27,27 @@ import com.yubico.webauthn.data.ByteArray;
 import lombok.NonNull;
 import lombok.Value;
 
+/**
+ * The U2f registration response generated after a successful registration request.
+ *
+ * @version $Id$
+ */
 @Value
 public class U2fRegistrationResponse
 {
+    ByteArray requestId;
 
-    private final ByteArray requestId;
+    U2fCredential credential;
 
-    private final U2fCredential credential;
+    Optional<ByteArray> sessionToken;
 
-    private final Optional<ByteArray> sessionToken;
-
+    /**
+     * Instantiates a new U2f registration response.
+     *
+     * @param requestId the id for the newly generated public-key credential
+     * @param credential the public-key credential
+     * @param sessionToken the session token
+     */
     @JsonCreator
     public U2fRegistrationResponse(
         @NonNull @JsonProperty("requestId") ByteArray requestId,

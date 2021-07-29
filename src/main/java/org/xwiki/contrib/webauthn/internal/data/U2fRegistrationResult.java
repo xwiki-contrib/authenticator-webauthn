@@ -30,27 +30,32 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
+/**
+ * The U2f registration result for a successful webauthn registration.
+ *
+ * @version $Id$
+ */
 @Value
 @Builder
 public class U2fRegistrationResult
 {
+    @NonNull PublicKeyCredentialDescriptor keyId;
 
-    @NonNull
-    private final PublicKeyCredentialDescriptor keyId;
+    boolean attestationTrusted;
 
-    private final boolean attestationTrusted;
+    @NonNull ByteArray publicKeyCose;
 
-    @NonNull
-    private final ByteArray publicKeyCose;
+    @NonNull @Builder.Default List<String> warnings = Collections.emptyList();
 
-    @NonNull
-    @Builder.Default
-    private final List<String> warnings = Collections.emptyList();
+    @NonNull @Builder.Default Optional<Attestation> attestationMetadata = Optional.empty();
 
-    @NonNull
-    @Builder.Default
-    private final Optional<Attestation> attestationMetadata = Optional.empty();
-
+    /**
+     * Instantiates a new U2f registration result.
+     *
+     * @param keyId the credential ID of the created webauthn credentials
+     * @param attestationTrusted the attestation is trusted? true or false
+     * @param publicKeyCose the public-key credential encoded in COSE_Key format
+     */
     public U2fRegistrationResult(@NonNull PublicKeyCredentialDescriptor keyId, boolean attestationTrusted,
         @NonNull ByteArray publicKeyCose)
     {
