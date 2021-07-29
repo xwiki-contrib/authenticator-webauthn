@@ -30,26 +30,31 @@ import com.yubico.webauthn.data.PublicKeyCredential;
 import lombok.Value;
 
 /**
- * Properties associated with a WebAuthn Registration Response for a user
+ * Properties associated with a WebAuthn Registration Response.
  *
  * @version $Id$
  */
 @Value
 public class RegistrationResponse
 {
+    ByteArray requestId;
 
-    private final ByteArray requestId;
+    PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> credential;
 
-    private final PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> credential;
+    Optional<ByteArray> sessionToken;
 
-    private final Optional<ByteArray> sessionToken;
-
+    /**
+     * Instantiates a new webauthn registration response.
+     *
+     * @param requestId the id for the newly generated public-key credential
+     * @param credential the public-key credential
+     * @param sessionToken the session token
+     */
     @JsonCreator
     public RegistrationResponse(
         @JsonProperty("requestId") ByteArray requestId,
         @JsonProperty("credential")
-            PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs>
-            credential,
+            PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> credential,
         @JsonProperty("sessionToken") Optional<ByteArray> sessionToken)
     {
         this.requestId = requestId;

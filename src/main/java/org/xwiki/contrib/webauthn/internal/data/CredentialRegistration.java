@@ -41,20 +41,40 @@ import lombok.With;
 @With
 public class CredentialRegistration
 {
-
+    /**
+     * The number of successful authentications for a given {@link RegisteredCredential}
+     */
     long signatureCount;
 
+    /**
+     * Describes a user account, with which public key credentials will be associated.
+     *
+     * @see <a
+     *     href="https://www.w3.org/TR/webauthn-1/#dictdef-publickeycredentialuserentity">§5.4.3.
+     *     User Account Parameters for Credential Generation (dictionary PublicKeyCredentialUserEntity)
+     *     </a>
+     */
     UserIdentity userIdentity;
 
-    Optional<String> credentialNickname;
-
+    /**
+     * The time at which registration was completed.
+     */
     @JsonIgnore
     Instant registrationTime;
 
+    /**
+     * An abstraction of a credential registered to a given xwiki standard user.
+     */
     RegisteredCredential credential;
 
+    /**
+     * Non-standardized representation of partly free-form information about an authenticator device.
+     */
     Optional<Attestation> attestationMetadata;
 
+    /**
+     * @return the exact time stamp when the registration of credentials was completed
+     */
     @JsonProperty("registrationTime")
     public String getRegistrationTimestamp()
     {

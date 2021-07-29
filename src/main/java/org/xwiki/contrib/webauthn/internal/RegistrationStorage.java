@@ -29,26 +29,52 @@ import com.yubico.webauthn.CredentialRepository;
 import com.yubico.webauthn.data.ByteArray;
 
 /**
- * Implementation of CredentialRepository
+ * Implementation of CredentialRepository. An abstraction of the database lookups needed by the library.
+ * <p>This is used by RelyingParty to look up credentials, usernames and user handles from
+ * usernames, user handles and credential IDs, etc.
  *
  * @version $Id$
  */
 public interface RegistrationStorage extends CredentialRepository
 {
+    /**
+     * Add the registered webauthn credentials to the given XWiki username.
+     */
     boolean addRegistrationByUsername(String username, CredentialRegistration reg);
 
+    /**
+     * Get all the registrations associated with the given XWiki username
+     */
     Collection<CredentialRegistration> getRegistrationsByUsername(String username);
 
+    /**
+     * Get all the registrations associated with the given XWiki username and the credential Id
+     */
     Optional<CredentialRegistration> getRegistrationByUsernameAndCredentialId(String username, ByteArray credentialId);
 
+    /**
+     * Get all the registrations associated with the given userHandle
+     */
     Collection<CredentialRegistration> getRegistrationsByUserHandle(ByteArray userHandle);
 
+    /**
+     * Remove a registration associated with the given XWiki username
+     */
     boolean removeRegistrationByUsername(String username, CredentialRegistration credentialRegistration);
 
+    /**
+     * Remove all registrations associated with the given XWiki username
+     */
     boolean removeAllRegistrations(String username);
 
+    /**
+     * Update signature count after every successful authentication using webauthn credentials
+     */
     void updateSignatureCount(AssertionResult result);
 
+    /**
+     * Check whether webauthn credentials exists for a given XWiki username or not
+     */
     default boolean userExists(String username)
     {
         return !getRegistrationsByUsername(username).isEmpty();

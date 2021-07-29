@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
- * Properties associated with a WebAuthn Registration Request for a username
+ * Properties associated with a WebAuthn Registration Request for a standard XWiki user.
  *
  * @version $Id$
  */
@@ -35,12 +35,13 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = false)
 public class RegistrationRequest
 {
+    // the standard XWiki user's username for which we are generating the registration request
     String username;
 
-    Optional<String> credentialNickname;
-
+    // the requestId associated with the request
     ByteArray requestId;
 
+    // Parameters for a call to <code>navigator.credentials.create()</code>.
     PublicKeyCredentialCreationOptions publicKeyCredentialCreationOptions;
 
     Optional<ByteArray> sessionToken;

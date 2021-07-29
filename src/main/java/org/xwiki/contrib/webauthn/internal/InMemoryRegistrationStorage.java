@@ -18,9 +18,6 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-/*
-
-Commenting out as maven-compiler-plugin was giving errors even after excluding it in pom.xml
 
 package org.xwiki.contrib.webauthn.internal;
 
@@ -45,62 +42,82 @@ import com.yubico.webauthn.CredentialRepository;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.PublicKeyCredentialDescriptor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 public class InMemoryRegistrationStorage implements RegistrationStorage, CredentialRepository
 {
-
+    /**
+     * Build a cache which should be automatically removed once after 1 day has elapsed after
+     * the it's creation, the most recent replacement of its value, or its last access.
+     *
+     * TODO: Change this ASAP
+     */
     private final Cache<String, Set<CredentialRegistration>> storage =
         CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(1, TimeUnit.DAYS).build();
 
-    private final Logger logger = LoggerFactory.getLogger(InMemoryRegistrationStorage.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryRegistrationStorage.class);
 
+    /**
+     * Add webauthn credentials registration for a standard xwiki user
+     *
+     * @param username the standard xwiki username
+     * @param reg properties associated with a WebAuthn credential
+     * @return an error if credentials for the username already exists
+     */
     @Override
     public boolean addRegistrationByUsername(String username, CredentialRegistration reg)
     {
         try {
             return storage.get(username, HashSet::new).add(reg);
         } catch (ExecutionException e) {
-            logger.error("Failed to add registration", e);
+            LOGGER.error("Failed to add registration", e);
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * @return  credential IDs of all credentials registered to the given username.
+     */
     @Override
     public Set<PublicKeyCredentialDescriptor> getCredentialIdsForUsername(String username)
     {
-        return getRegistrationsByUsername(username).stream()
-            .map(
-                registration ->
-                    PublicKeyCredentialDescriptor.builder()
-                        .id(registration.getCredential().getCredentialId())
-                        .build())
+        return getRegistrationsByUsername(username).stream().map(registration ->
+            PublicKeyCredentialDescriptor.builder()
+                .id(registration.getCredential().getCredentialId())
+                .build())
             .collect(Collectors.toSet());
     }
 
+    /**
+     * @return  users for which we have generated webauthn credentials, error if none.
+     */
     @Override
     public Collection<CredentialRegistration> getRegistrationsByUsername(String username)
     {
         try {
             return storage.get(username, HashSet::new);
         } catch (ExecutionException e) {
-            logger.error("Registration lookup failed", e);
+            LOGGER.error("Registration lookup failed", e);
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * @return  all registrations for the given userHandle.
+     */
     @Override
     public Collection<CredentialRegistration> getRegistrationsByUserHandle(ByteArray userHandle)
     {
-        return storage.asMap().values().stream()
-            .flatMap(Collection::stream)
-            .filter(
-                credentialRegistration ->
+        return storage.asMap().values().stream().flatMap(Collection::stream)
+            .filter(credentialRegistration ->
                     userHandle.equals(credentialRegistration.getUserIdentity().getId()))
             .collect(Collectors.toList());
     }
 
+    /**
+     * @return username corresponding to the given user handle, inverse of
+     * {@link #getUserHandleForUsername(String)}
+     */
     @Override
     public Optional<String> getUsernameForUserHandle(ByteArray userHandle)
     {
@@ -109,6 +126,10 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
             .map(CredentialRegistration::getUsername);
     }
 
+    /**
+     * @return user handle corresponding to the given username, inverse of
+     * {@link #getUsernameForUserHandle(ByteArray)}
+     */
     @Override
     public Optional<ByteArray> getUserHandleForUsername(String username)
     {
@@ -124,9 +145,8 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
             getRegistrationByUsernameAndCredentialId(result.getUsername(), result.getCredentialId())
                 .orElseThrow(
                     () ->
-                        new NoSuchElementException(
-                            String.format(
-                                "Credential \"%s\" is not registered to user \"%s\"",
+                        new NoSuchElementException(String.format(
+                            "Credential \"%s\" is not registered to user \"%s\"",
                                 result.getCredentialId(), result.getUsername())));
 
         Set<CredentialRegistration> regs = storage.getIfPresent(result.getUsername());
@@ -144,7 +164,7 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
                 .filter(credReg -> id.equals(credReg.getCredential().getCredentialId()))
                 .findFirst();
         } catch (ExecutionException e) {
-            logger.error("Registration lookup failed", e);
+            LOGGER.error("Registration lookup failed", e);
             throw new RuntimeException(e);
         }
     }
@@ -155,7 +175,7 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
         try {
             return storage.get(username, HashSet::new).remove(credentialRegistration);
         } catch (ExecutionException e) {
-            logger.error("Failed to remove registration", e);
+            LOGGER.error("Failed to remove registration", e);
             throw new RuntimeException(e);
         }
     }
@@ -167,6 +187,13 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
         return true;
     }
 
+    /**
+     * Look up the public key and stored signature count for the given credential registered to the
+     * given user.
+     *
+     * <p>The returned {@link RegisteredCredential} is not expected to be long-lived. It may be read
+     * directly from a database or assembled from other components.
+     */
     @Override
     public Optional<RegisteredCredential> lookup(ByteArray credentialId, ByteArray userHandle) {
 
@@ -176,23 +203,27 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
                 .filter(credReg -> credentialId.equals(credReg.getCredential().getCredentialId()))
                 .findAny();
 
-        logger.debug(
-            "lookup credential ID: {}, user handle: {}; result: {}",
-            credentialId,
-            userHandle,
-            registrationMaybe);
+        LOGGER.debug(
+            "Lookup credential ID: {}, user handle: {}, result: {}", credentialId, userHandle, registrationMaybe);
 
         return registrationMaybe.flatMap(
-            registration ->
-                Optional.of(
-                    RegisteredCredential.builder()
-                        .credentialId(registration.getCredential().getCredentialId())
-                        .userHandle(registration.getUserIdentity().getId())
-                        .publicKeyCose(registration.getCredential().getPublicKeyCose())
-                        .signatureCount(registration.getSignatureCount())
-                        .build()));
+            registration -> Optional.of(
+                RegisteredCredential.builder()
+                    .credentialId(registration.getCredential().getCredentialId())
+                    .userHandle(registration.getUserIdentity().getId())
+                    .publicKeyCose(registration.getCredential().getPublicKeyCose())
+                    .signatureCount(registration.getSignatureCount())
+                    .build()));
     }
 
+    /**
+     * Look up all credentials with the given credential ID, regardless of what user they're
+     * registered to.
+     *
+     * <p>This is used to refuse registration of duplicate credential IDs. Therefore, under normal
+     * circumstances this method should only return zero or one credential (this is an expected
+     * consequence, not an interface requirement).
+     */
     @Override
     public Set<RegisteredCredential> lookupAll(ByteArray credentialId)
     {
@@ -200,16 +231,12 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
             storage.asMap().values().stream()
                 .flatMap(Collection::stream)
                 .filter(reg -> reg.getCredential().getCredentialId().equals(credentialId))
-                .map(
-                    reg ->
-                        RegisteredCredential.builder()
-                            .credentialId(reg.getCredential().getCredentialId())
-                            .userHandle(reg.getUserIdentity().getId())
-                            .publicKeyCose(reg.getCredential().getPublicKeyCose())
-                            .signatureCount(reg.getSignatureCount())
-                            .build())
+                .map(reg -> RegisteredCredential.builder()
+                    .credentialId(reg.getCredential().getCredentialId())
+                    .userHandle(reg.getUserIdentity().getId())
+                    .publicKeyCose(reg.getCredential().getPublicKeyCose())
+                    .signatureCount(reg.getSignatureCount())
+                    .build())
                 .collect(Collectors.toSet()));
     }
 }
-
- */
