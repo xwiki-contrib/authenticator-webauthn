@@ -26,7 +26,7 @@ import com.xpn.xwiki.XWikiException;
 import com.xpn.xwiki.doc.XWikiDocument;
 
 /**
- * Helper to manager WebAuthn profiles XClass and XObject.
+ * Helper to manage WebAuthn user profile's XClass and XObject.
  *
  * @version $Id$
  */
@@ -37,19 +37,29 @@ public interface WebAuthnUserStore
      * Add or update WebAuthn metadata in the user profile
      *
      * @param userDocument the document in which the WebAuthn user is stored
-     * @param id the id associated with the WebAuthn credentials
-     * TODO: Add more properties here definitely
+     * @param username the WebAuthn user's username.
+     * @param userhandle the WebAuthn user's userhandle.
+     * @param credentialId the WebAuthn user's credentialId.
+     * @param userId the WebAuthn user's userId.
+     * @param publicKeyCose the WebAuthn user's publicKeyCose.
+     * @param signatureCount the WebAuthn user's signature count.
      **/
-    boolean updateWebAuthnUser(XWikiDocument userDocument, String id);
+    boolean updateWebAuthnUser(XWikiDocument userDocument, String username, String userhandle, String credentialId,
+        String userId, String publicKeyCose, String signatureCount);
 
     /**
      * Search in the existing XWiki user if one already has WebAuthn credentials associated with them
      *
-     * @param id the id associated with the WebAuthn credentials
-     * TODO: Add more properties here definitely
+     * @param username the WebAuthn user's username.
+     * @param userhandle the WebAuthn user's userhandle.
+     * @param credentialId the WebAuthn user's credentialId.
+     * @param userId the WebAuthn user's userId.
+     * @param publicKeyCose the WebAuthn user's publicKeyCose.
+     * @param signatureCount the WebAuthn user's signature count.
      * @return the document of the user profile which already contains theses WebAuthn credentials
      * @throws XWikiException when failing the get the document
      * @throws QueryException when failing to search for the document
      */
-    XWikiDocument searchDocument(String id) throws XWikiException, QueryException;
+    XWikiDocument searchDocument(String username, String userhandle, String credentialId,
+        String userId, String publicKeyCose, String signatureCount) throws XWikiException, QueryException;
 }

@@ -24,6 +24,7 @@ import java.util.Arrays;
 import org.xwiki.model.reference.LocalDocumentReference;
 
 import com.xpn.xwiki.XWiki;
+import com.xpn.xwiki.objects.BaseObject;
 
 /**
  * To manipulate WebAuthn metadata stored in a user profile.
@@ -33,21 +34,152 @@ import com.xpn.xwiki.XWiki;
 public class WebAuthnUser
 {
     /**
-     * The String reference of the class defining the object which contains the WebAuthn metadata in the user profile.
+     * The String reference of the class defining the object which contains the WebAuthn credential's
+     * metadata in the user profile.
      */
-    public static final String CLASS_FULLNAME = "XWiki.WebAuthn.UserClass";
+    public static final String CLASS_FULLNAME = "XWiki.WebAuthn.UserCredentialClass";
 
     /**
-     * The reference of the class defining the object which contains the WebAuthn metadata in the user profile.
+     * The reference of the class defining the object which contains the WebAuthn credential's metadata in the
+     * user profile.
      */
     public static final LocalDocumentReference CLASS_REFERENCE =
-        new LocalDocumentReference(Arrays.asList(XWiki.SYSTEM_SPACE, "WebAuthn"), "UserClass");
+        new LocalDocumentReference(Arrays.asList(XWiki.SYSTEM_SPACE, "WebAuthn"), "UserCredentialClass");
 
 
     /**
-     * The name of the property containing the WebAuthn credential id.
+     * The name of the property containing the WebAuthn user's username.
      */
-    public static final String FIELD_ID = "id";
+    public static final String FIELD_USERNAME = "username";
 
-    // TODO: add different properties regarding WebAuthn
+    /**
+     * The name of the property containing the WebAuthn user's userhandle.
+     */
+    public static final String FIELD_USERHANDLE = "userhandle";
+
+    /**
+     * The name of the property containing the WebAuthn user's credential ID.
+     */
+    public static final String FIELD_CREDENTIALID = "credentialId";
+
+    /**
+     * The name of the property containing the WebAuthn user's user ID.
+     */
+    public static final String FIELD_USERID = "userId";
+
+    /**
+     * The name of the property containing the WebAuthn user's public-key encoded in COSE_Key format.
+     */
+    public static final String FIELD_PUBLICKEYCOSE = "publicKeyCose";
+
+    /**
+     * The name of the property containing the WebAuthn user's number of successful assertions.
+     */
+    public static final String FIELD_SIGNATURECOUNT = "signatureCount";
+
+    private final BaseObject xobject;
+
+    /**
+     * @param xobject the actual XWiki object
+     */
+    public WebAuthnUser(BaseObject xobject)
+    {
+        this.xobject = xobject;
+    }
+
+    /**
+     * @return the WebAuthn user's username.
+     */
+    public String getUsername()
+    {
+        return this.xobject.getStringValue(FIELD_USERNAME);
+    }
+
+    /**
+     * @param username the WebAuthn user's username.
+     */
+    public void setUsername(String username)
+    {
+        this.xobject.setStringValue(FIELD_USERNAME, username);
+    }
+
+    /**
+     * @return the WebAuthn user's userhandle.
+     */
+    public String getUserhandle()
+    {
+        return this.xobject.getStringValue(FIELD_USERHANDLE);
+    }
+
+    /**
+     * @param userhandle the WebAuthn user's userhandle.
+     */
+    public void setUserhandle(String userhandle)
+    {
+        this.xobject.setStringValue(FIELD_USERHANDLE, userhandle);
+    }
+
+    /**
+     * @return the WebAuthn user's credentialId.
+     */
+    public String getCredentialId()
+    {
+        return this.xobject.getStringValue(FIELD_CREDENTIALID);
+    }
+
+    /**
+     * @param credentialId the WebAuthn user's credentialId.
+     */
+    public void setCredentialId(String credentialId)
+    {
+        this.xobject.setStringValue(FIELD_CREDENTIALID, credentialId);
+    }
+
+    /**
+     * @return the WebAuthn user's userId.
+     */
+    public String getUserId()
+    {
+        return this.xobject.getStringValue(FIELD_USERID);
+    }
+
+    /**
+     * @param userId the WebAuthn user's userId.
+     */
+    public void setUserId(String userId)
+    {
+        this.xobject.setStringValue(FIELD_USERID, userId);
+    }
+
+    /**
+     * @return the WebAuthn user's userId.
+     */
+    public String getPublicKeyCose()
+    {
+        return this.xobject.getStringValue(FIELD_PUBLICKEYCOSE);
+    }
+
+    /**
+     * @param publicKeyCose the WebAuthn user's publicKeyCose.
+     */
+    public void setPublicKeyCose(String publicKeyCose)
+    {
+        this.xobject.setStringValue(FIELD_PUBLICKEYCOSE, publicKeyCose);
+    }
+
+    /**
+     * @return the WebAuthn user's signature count.
+     */
+    public String getSignatureCount()
+    {
+        return this.xobject.getStringValue(FIELD_SIGNATURECOUNT);
+    }
+
+    /**
+     * @param signatureCount the WebAuthn user's signature count.
+     */
+    public void setSignatureCount(String signatureCount)
+    {
+        this.xobject.setIntValue(FIELD_SIGNATURECOUNT, Integer.parseInt(signatureCount));
+    }
 }

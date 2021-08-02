@@ -76,7 +76,7 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
     }
 
     /**
-     * @return  credential IDs of all credentials registered to the given username.
+     * @return credential IDs of all credentials registered to the given username.
      */
     @Override
     public Set<PublicKeyCredentialDescriptor> getCredentialIdsForUsername(String username)
@@ -89,7 +89,7 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
     }
 
     /**
-     * @return  users for which we have generated webauthn credentials, error if none.
+     * @return users for which we have generated webauthn credentials, error if none.
      */
     @Override
     public Collection<CredentialRegistration> getRegistrationsByUsername(String username)
