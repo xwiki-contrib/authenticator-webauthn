@@ -28,6 +28,8 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpRequest;
+import org.apache.velocity.tools.view.ServletUtils;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.manager.ComponentManager;
 import org.xwiki.container.Container;
@@ -43,8 +45,6 @@ import org.xwiki.resource.ResourceReferenceHandlerChain;
 import org.xwiki.resource.ResourceReferenceHandlerException;
 import org.xwiki.resource.ResourceType;
 
-import com.onelogin.saml2.http.HttpRequest;
-import com.onelogin.saml2.servlet.ServletUtils;
 import com.xpn.xwiki.XWiki;
 import com.xpn.xwiki.XWikiContext;
 import com.xpn.xwiki.XWikiException;
@@ -142,17 +142,16 @@ public class WebAuthnResourceReferenceHandler extends AbstractResourceReferenceH
         HttpServletResponse servletResponse) throws Exception
     {
         // Convert from Servlet http request to generic http request
-        HttpRequest httpRequest = ServletUtils.makeHttpRequest(httpServletRequest);
 
-        Response response;
+        Response response = null;
 
         if (this.componentManager.hasComponent(WebAuthnEndpoint.class, reference.getEndpoint())) {
             WebAuthnEndpoint endpoint = this.componentManager.getInstance(WebAuthnEndpoint.class,
                 reference.getPath());
 
-            response = endpoint.handle(httpRequest, reference);
+            // response = endpoint.handle(httpRequest, reference);
         } else {
-            response = this.unknown.handle(httpRequest, reference);
+            // response = this.unknown.handle(httpRequest, reference);
         }
 
         // Response might be null if the handler already answered the client (for example

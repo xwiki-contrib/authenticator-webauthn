@@ -29,6 +29,7 @@ import java.util.function.Function;
  */
 public final class Either<L, R>
 {
+
     private final boolean isRight;
     private final L leftValue;
     private final R rightValue;
@@ -63,6 +64,15 @@ public final class Either<L, R>
             return Optional.of(leftValue);
         } else {
             throw new IllegalStateException("Cannot call left() on a right value.");
+        }
+    }
+
+    public final Optional<R> right()
+    {
+        if (isRight()) {
+            return Optional.of(rightValue);
+        } else {
+            throw new IllegalStateException("Cannot call right() on a left value.");
         }
     }
 

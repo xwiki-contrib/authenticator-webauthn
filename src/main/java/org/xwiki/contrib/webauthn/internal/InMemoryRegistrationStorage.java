@@ -195,7 +195,8 @@ public class InMemoryRegistrationStorage implements RegistrationStorage, Credent
      * directly from a database or assembled from other components.
      */
     @Override
-    public Optional<RegisteredCredential> lookup(ByteArray credentialId, ByteArray userHandle) {
+    public Optional<RegisteredCredential> lookup(ByteArray credentialId, ByteArray userHandle)
+    {
 
         Optional<CredentialRegistration> registrationMaybe =
             storage.asMap().values().stream()
