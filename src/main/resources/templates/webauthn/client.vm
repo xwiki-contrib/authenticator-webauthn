@@ -1,0 +1,262 @@
+/*
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+  <title>$services.localization.render('webauthn.template.client.title')</title>
+
+  <!-- The only styles used by the UI -->
+  <style type="text/css">
+    body{
+      background-color: gray;
+      font-family: sans-serif;
+      font-size: 87.5%;
+    }
+    #content{
+      margin: 1em auto;
+      width: 80%;
+      color: #4D4D4D;
+      border: 1px solid #E8E8E8;
+      background-color: #FFF;
+      border-radius: 4px;
+      box-shadow: 0px 0px 7px #E8E8E8;
+      padding: 1em;
+    }
+  </style>
+
+  <!-- Adding important JS files required during the workflow-->
+  <script src="lib/u2f-api-1.1.js"></script>
+  <script src="lib/text-encoding-0.7.0/encoding.js"></script>
+  <script src="lib/text-encoding-0.7.0/encoding-indexes.js"></script>
+  <script src="lib/fetch/fetch-3.0.0.js"></script>
+  <script src="lib/base64js/base64js-1.3.0.min.js"></script>
+  <script src="js/base64url.js"></script>
+  <script src="js/webauthn.js"></script>
+
+  <!-- Helper JS for functioning of the UI -->
+  <script>
+    let ceremonyState = {};
+    let session = {};
+
+    function extend(obj, more) {
+      return Object.assign({}, obj, more);
+    }
+
+    function rejectIfNotSuccess(response) {
+      if (response.success) {
+        return response;
+      } else {
+        return new Promise((resolve, reject) => reject(response));
+      }
+    }
+
+    function rejected(err) {
+      return new Promise((resolve, reject) => reject(err));
+    }
+
+    function updateSession(response) {
+      if (response.sessionToken) {
+        session.sessionToken = response.sessionToken;
+      }
+      if (response.username) {
+        session.username = response.username;
+      }
+      return response;
+    }
+
+    function getRegisterRequest(username, requireResidentKey = false) {
+      return fetch(urls.register, {
+        body: new URLSearchParams({
+          username,
+          requireResidentKey,
+        }),
+        method: 'POST',
+      })
+        .then(response => response.json())
+        .then(rejectIfNotSuccess)
+      ;
+    }
+
+    function executeRegisterRequest(request) {
+      console.log('executeRegisterRequest', request);
+
+      return webauthn.createCredential(request.publicKeyCredentialCreationOptions);
+    }
+
+
+    function submitResponse(request, response) {
+      console.log('submitResponse', request, response);
+
+      const body = {
+        requestId: request.requestId,
+        credential: response,
+        sessionToken: request.sessionToken || session.sessionToken || null,
+      };
+
+      return fetch(1, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+        .then(response => response.json())
+        .then(updateSession)
+      ;
+    }
+
+    function performCeremony(params) {
+      const getRequest = params.getRequest; /* function(urls: object): { publicKeyCredentialCreationOptions: object } | { publicKeyCredentialRequestOptions: object } */
+      const statusStrings = params.statusStrings; /* { init, authenticatorRequest, serverRequest, success, } */
+      const executeRequest = params.executeRequest; /* function({ publicKeyCredentialCreationOptions: object } | { publicKeyCredentialRequestOptions: object }): Promise[PublicKeyCredential] */
+      const handleError = params.handleError; /* function(err): ? */
+
+      return executeRequest(request)
+            .then(webauthn.responseToObject);
+            .then(finishCeremony)
+      ;
+    }
+
+    function finishCeremony(response) {
+      const request = ceremonyState.request;
+      const statusStrings = ceremonyState.statusStrings;
+
+      return submitResponse(request, response)
+        .then(data => {
+          if (data && data.success) {
+            setStatus(statusStrings.success);
+          } else {
+            console.log('Error during finishCeremony()');
+          }
+          return data;
+        });
+    }
+
+    function register(requireResidentKey = false, getRequest = getRegisterRequest) {
+      const username = document.getElementById('username').value;
+      var request;
+
+      return performCeremony({
+        getRequest: urls => getRequest(username),
+        statusStrings: {
+          init: 'Initiating registration ceremony with server...',
+          authenticatorRequest: 'Asking authenticators to create credential...',
+          success: 'Registration successful!',
+        },
+        executeRequest: req => {
+          request = req;
+          return executeRegisterRequest(req);
+        },
+      })
+      .catch((err) => {
+        console.error('Registration failed', err);
+
+        if (err.name === 'NotAllowedError') {
+          if (request.publicKeyCredentialCreationOptions.excludeCredentials
+              && request.publicKeyCredentialCreationOptions.excludeCredentials.length > 0
+          ) {
+            console.log('Credential creation failed, probably because an already registered credential is avaiable.');
+          } else {
+            console.log('Credential creation failed for an unknown reason.');
+          }
+        } else if (err.name === 'InvalidStateError') {
+          console.log(`This authenticator is already registered for the account "${username}". Please try again with a different authenticator.`)
+        } else if (err.message) {
+          console.log(`${err.name}: ${err.message}`);
+        } else if (err.messages) {
+          console.log(err.messages);
+        }
+        return rejected(err);
+      });
+    
+
+    function getAuthenticateRequest(username) {
+      return fetch(1, {
+        body: new URLSearchParams(username),
+        method: 'POST',
+      })
+        .then(response => response.json())
+        .then(updateSession)
+        .then(rejectIfNotSuccess)
+      ;
+    }
+
+    function executeAuthenticateRequest(request) {
+      console.log('executeAuthenticateRequest', request);
+
+      return webauthn.getAssertion(request.publicKeyCredentialRequestOptions);
+    }
+
+    function authenticateWithUsername() {
+      return authenticate(username = document.getElementById('username').value);
+    }
+
+    function authenticate(username, getRequest = getAuthenticateRequest) {
+      return performCeremony({
+        getRequest: urls => getRequest(username),
+        statusStrings: {
+          init: 'Initiating authentication ceremony with server...',
+          authenticatorRequest: 'Asking authenticators to perform assertion...',
+          success: 'Authentication successful!',
+        },
+        executeRequest: executeAuthenticateRequest,
+      }).then(data => {
+        if (data.registrations) {
+          console.log(`Authenticated as: ${data.registrations[0].username}`);
+        }
+        return data;
+      }).catch((err) => {
+        console.error('Authentication failed.',err);
+        if (err.name === 'InvalidStateError') {
+          console.log(`This authenticator is not registered for the account "${username}". Please try again with a registered authenticator.`)
+        } else if (err.message) {
+          console.log(`${err.name}: ${err.message}`);
+        } else if (err.messages) {
+          console.logs(err.messages);
+        }
+        return rejected(err);
+      });
+    }
+
+    function init() {
+      return false;
+    }
+
+    window.onload = init;
+  </script>
+</head>
+<body>
+  <div id="content">
+    <form class="xform">
+      <dl>
+        ## Ask the XWiki username
+        <dt>$escapetool.xml($services.localization.render('webauthn.template.client.username'))</dt>
+        <dd><input type="text" name="webauthn.xwikiuser" id="username"/></dd>
+      </dl>
+      <input type="submit" class="button" value="$escapetool.xml($services.localization.render('webauthn.template.client
+      .registration'))" onClick="javascript:register()"/>
+      <input type="submit" class="button" value="$escapetool.xml($services.localization.render('webauthn.template.client
+      .authentication'))" onClick="javascript:authenticateWithUsername()"/>
+    </form>
+    <hr/>
+    <form>
+      <input type="hidden" name="webauthn.skipped" value="true"/>
+      <input type="submit" class="button" value="$escapetool.xml($services.localization.render('webauthn.template.client.skip.submit'))"/>
+    </form>
+</body>
+</html>
