@@ -38,6 +38,8 @@ public class RegistrationRequest
     // the standard XWiki user's username for which we are generating the registration request
     String username;
 
+    Optional<String> credentialNickname;
+
     // the requestId associated with the request
     ByteArray requestId;
 

@@ -48,16 +48,6 @@ public class WebAuthnUser
 
 
     /**
-     * The name of the property containing the WebAuthn user's username.
-     */
-    public static final String FIELD_USERNAME = "username";
-
-    /**
-     * The name of the property containing the WebAuthn user's userhandle.
-     */
-    public static final String FIELD_USERHANDLE = "userhandle";
-
-    /**
      * The name of the property containing the WebAuthn user's credential ID.
      */
     public static final String FIELD_CREDENTIALID = "credentialId";
@@ -85,38 +75,6 @@ public class WebAuthnUser
     public WebAuthnUser(BaseObject xobject)
     {
         this.xobject = xobject;
-    }
-
-    /**
-     * @return the WebAuthn user's username.
-     */
-    public String getUsername()
-    {
-        return this.xobject.getStringValue(FIELD_USERNAME);
-    }
-
-    /**
-     * @param username the WebAuthn user's username.
-     */
-    public void setUsername(String username)
-    {
-        this.xobject.setStringValue(FIELD_USERNAME, username);
-    }
-
-    /**
-     * @return the WebAuthn user's userhandle.
-     */
-    public String getUserhandle()
-    {
-        return this.xobject.getStringValue(FIELD_USERHANDLE);
-    }
-
-    /**
-     * @param userhandle the WebAuthn user's userhandle.
-     */
-    public void setUserhandle(String userhandle)
-    {
-        this.xobject.setStringValue(FIELD_USERHANDLE, userhandle);
     }
 
     /**

@@ -56,6 +56,8 @@ public class CredentialRegistration
      */
     UserIdentity userIdentity;
 
+    Optional<String> credentialNickname;
+
     /**
      * The time at which registration was completed.
      */

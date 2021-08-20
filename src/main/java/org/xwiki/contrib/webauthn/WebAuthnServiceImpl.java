@@ -24,10 +24,11 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xwiki.context.Execution;
-import org.xwiki.context.ExecutionContext;
+import org.xwiki.container.servlet.filters.SavedRequestManager;
+import org.xwiki.contrib.webauthn.internal.WebAuthn;
 import org.xwiki.contrib.webauthn.internal.WebAuthnConfiguration;
 
 import com.xpn.xwiki.XWikiContext;
@@ -46,25 +47,31 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebAuthnServiceImpl.class);
 
+    private static final String WEBAUTHN_SRID = "webauthn.srid";
+
     private WebAuthnConfiguration configuration = Utils.getComponent(WebAuthnConfiguration.class);
 
-    // placeholders are added below
+    //private WebAuthnRegistrationManager users = Utils.getComponent(WebAuthnRegistrationManager.class);
+
+    private WebAuthn manager = Utils.getComponent(WebAuthn.class);
+
+
     @Override
     public XWikiUser checkAuth(XWikiContext context) throws XWikiException
     {
-        this.LOGGER.debug("Checking if a user already exists");
+        LOGGER.debug("Checking if a user already exists");
         // Check if there is already a user in the session, take care of logout, etc.
         XWikiUser user = super.checkAuth(context);
 
         // Try WebAuthn if there is no already authenticated user
         if (user == null) {
             try {
-                // checkAuthWebAuthn(context)
+                checkAuthWebAuthn(context);
             } catch (Exception e) {
-                // throw new XWikiException("Authentication via WebAuthn failed.", e);
+                throw new XWikiException("Authentication via WebAuthn failed.", e);
             }
         } else {
-            // Check if we need to update something
+            // TODO: Check if we need to update something
         }
 
         return user;
@@ -72,7 +79,8 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
 
     private void checkAuthWebAuthn(XWikiContext context) throws Exception
     {
-        this.LOGGER.debug("Checking if WebAuthn was skipped");
+        LOGGER.debug("Checking if WebAuthn was skipped");
+
         // Check if WebAuthn is skipped or not and remember it
         if (this.configuration.isSkipped()) {
             maybeStoreRequestParameterInSession(context.getRequest(), WebAuthnConfiguration.PROP_SKIPPED,
@@ -86,40 +94,73 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
 
         // Make sure the session is free from anything related to a previously authenticated user
         // in case we just did a logout
+        if(this.configuration.getWebAuthnUser() != null) {
+            // this.users.logout();
+        }
+
+        // authenticate the WebAuthn user
+        String webauthnUser = context.getRequest().getParameter(WebAuthnConfiguration.PROP_XWIKIUSER);
+        if (webauthnUser != null) {
+            authenticate(context);
+
+            return;
+        }
 
         // Call WebAuthn Authenticator when someone requests to login
+        if (context.getAction().equals("login")) {
+            showLoginWebAuthn(context);
+        }
     }
 
 
     private void showLoginWebAuthn(XWikiContext context) throws Exception
     {
         // Check endpoints for authentication
-        this.LOGGER.debug("Show the login screen to the user");
-        // If no endpoint can be found, ask for it
+        LOGGER.debug("Show the login screen to the user");
 
-        // Authenticate user
+        // Save the request to not loose sent content
+        String savedRequestId = handleSavedRequest(context);
+
+        this.manager.executeTemplate("webauthn/client/provider.vm", context.getResponse());
+
+        context.setFinished(true);
     }
 
-    private void authenticate(XWikiContext context) throws Exception, URISyntaxException, IOException
+    private void authenticate(XWikiContext context) throws URISyntaxException, IOException
     {
-        // Generate authentication URL
-        this.LOGGER.debug("Authenticating the user");
-        // Remember the current URL
+        // Save the request to not loose sent content
+        String savedRequestId = handleSavedRequest(context);
 
-        // Create the request URL
-
-        // Redirect user to home if successfully authenticated
+        authenticate(savedRequestId, context);
     }
 
-    private ExecutionContext getExecutionContext()
+    private void authenticate(String savedRequestId, XWikiContext context) throws URISyntaxException, IOException
     {
-        Execution execution = Utils.getComponent(Execution.class);
+        // Remember various stuff in the session so that callback can access it
+        XWikiRequest request = context.getRequest();
 
-        if (execution != null) {
-            return execution.getContext();
+    }
+
+    private String getSavedRequestIdentifier(XWikiRequest request)
+    {
+        String savedRequestId = request.getParameter(SavedRequestManager.getSavedRequestIdentifier());
+        if (savedRequestId == null) {
+            savedRequestId = request.getParameter(WEBAUTHN_SRID);
         }
 
-        return null;
+        return savedRequestId;
+    }
+
+    private String handleSavedRequest(XWikiContext xcontext)
+    {
+        XWikiRequest request = xcontext.getRequest();
+        String savedRequestId = getSavedRequestIdentifier(request);
+        if (StringUtils.isEmpty(savedRequestId)) {
+            // Save the request to not loose sent content
+            savedRequestId = SavedRequestManager.saveRequest(request);
+        }
+
+        return savedRequestId;
     }
 
     // Maybe useful in future(maybeStoreRequestParameterInSession), will remove if not
@@ -147,7 +188,7 @@ public class WebAuthnServiceImpl extends XWikiAuthServiceImpl
     public void showLogin(XWikiContext context) throws XWikiException
     {
         // If WebAuthn is not skipped and we can't authenticate user, throw error
-        this.LOGGER.debug("Show the login screen to the user");
+        LOGGER.debug("Show the login screen to the user");
 
         if (!this.configuration.isSkipped()) {
             try {

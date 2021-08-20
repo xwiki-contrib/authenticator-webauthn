@@ -1,9 +1,5 @@
-org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnAuthFinishEndpoint
-org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnAuthStartEndpoint
-org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnLogoutEndpoint
-org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnRegistrationFinishEndpoint
-org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnRegistrationStartEndpoint
+org.xwiki.contrib.webauthn.internal.store.WebAuthnCredentialClassDocumentInitializer
+org.xwiki.contrib.webauthn.internal.store.WebAuthnUser
+org.xwiki.contrib.webauthn.internal.store.WebAuthnUserStore
+org.xwiki.contrib.webauthn.internal.WebAuthn
 org.xwiki.contrib.webauthn.internal.WebAuthnConfiguration
-org.xwiki.contrib.webauthn.internal.WebAuthnManager
-org.xwiki.contrib.webauthn.internal.WebAuthnResourceReferenceHandler
-org.xwiki.contrib.webauthn.internal.WebAuthnResourceReferenceResolver

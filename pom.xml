@@ -43,7 +43,8 @@
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
 
     <xwiki.enforcer.enforce-javase-dependencies.skip>true</xwiki.enforcer.enforce-javase-dependencies.skip>
-    <xwiki.compiler.default-compile.skip>true</xwiki.compiler.default-compile.skip>
+    <xwiki.enforcer.enforce-upper-bounds.skip>true</xwiki.enforcer.enforce-upper-bounds.skip>
+    <xwiki.compiler.compile.default-compile.skip>true</xwiki.compiler.compile.default-compile.skip>
 
     <!-- This extension needs to be installed at the farm level (ie in the root namespace) to work fine.
          This is because is contributes a new URL Resource Handler and those need to be installed in the
@@ -107,6 +108,13 @@
       <artifactId>cose-java</artifactId>
       <version>1.1.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>oauth2-oidc-sdk</artifactId>
+      <version>9.12</version>
+      <scope>compile</scope>
+    </dependency>
+
   </dependencies>
    <!-- Test dependencies
     <dependency>

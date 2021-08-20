@@ -28,17 +28,13 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.HttpRequest;
-import org.apache.velocity.tools.view.ServletUtils;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.manager.ComponentManager;
 import org.xwiki.container.Container;
 import org.xwiki.container.Request;
-import org.xwiki.container.Response;
 import org.xwiki.container.servlet.ServletRequest;
 import org.xwiki.container.servlet.ServletResponse;
 import org.xwiki.context.Execution;
-import org.xwiki.contrib.webauthn.internal.endpoint.WebAuthnEndpoint;
 import org.xwiki.resource.AbstractResourceReferenceHandler;
 import org.xwiki.resource.ResourceReference;
 import org.xwiki.resource.ResourceReferenceHandlerChain;
@@ -70,9 +66,6 @@ public class WebAuthnResourceReferenceHandler extends AbstractResourceReferenceH
     private ComponentManager componentManager;
 
     @Inject
-    private WebAuthnEndpoint unknown;
-
-    @Inject
     private Execution execution;
 
     @Override
@@ -99,7 +92,7 @@ public class WebAuthnResourceReferenceHandler extends AbstractResourceReferenceH
         iniitializeXWikiContext(httpServletRequest, httpServletResponse);
 
         try {
-            handle(reference, httpServletRequest, httpServletResponse);
+            // handle(reference, httpServletRequest, httpServletResponse);
         } catch (Exception e) {
             throw new ResourceReferenceHandlerException("Failed to handle http servlet request", e);
         }
@@ -138,30 +131,6 @@ public class WebAuthnResourceReferenceHandler extends AbstractResourceReferenceH
         }
     }
 
-    private void handle(WebAuthnResourceReference reference, HttpServletRequest httpServletRequest,
-        HttpServletResponse servletResponse) throws Exception
-    {
-        // Convert from Servlet http request to generic http request
 
-        Response response = null;
-
-        if (this.componentManager.hasComponent(WebAuthnEndpoint.class, reference.getEndpoint())) {
-            WebAuthnEndpoint endpoint = this.componentManager.getInstance(WebAuthnEndpoint.class,
-                reference.getPath());
-
-            // response = endpoint.handle(httpRequest, reference);
-        } else {
-            // response = this.unknown.handle(httpRequest, reference);
-        }
-
-        // Response might be null if the handler already answered the client (for example
-        // a redirect to the login screen
-        if (response != null) {
-            // Create http response
-            HttpServletResponse httpResponse = (HttpServletResponse) response.getOutputStream();
-
-            // Apply generic http response to Sevlet http response
-            // ServletUtils.applyHTTPResponse(httpResponse, servletResponse);
-        }
     }
-}
+

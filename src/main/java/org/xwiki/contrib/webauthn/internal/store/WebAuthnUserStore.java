@@ -61,31 +61,22 @@ public class WebAuthnUserStore
      * Add or update WebAuthn metadata in the user profile
      *
      * @param userDocument the document in which the WebAuthn user is stored
-     * @param username the WebAuthn user's username.
-     * @param userhandle the WebAuthn user's userhandle.
      * @param credentialId the WebAuthn user's credentialId.
      * @param userId the WebAuthn user's userId.
      * @param publicKeyCose the WebAuthn user's publicKeyCose.
      * @param signatureCount the WebAuthn user's signature count.
      **/
-    public boolean updateWebAuthnUser(XWikiDocument userDocument, String username, String userhandle,
-        String credentialId, String userId, String publicKeyCose, String signatureCount)
+    public boolean updateWebAuthnUser(XWikiDocument userDocument, String credentialId,
+        String userId, String publicKeyCose, int signatureCount)
     {
         XWikiContext xcontext = this.xcontextProvider.get();
+
+        String sc = Integer.toString(signatureCount);
 
         WebAuthnUser user = new WebAuthnUser(userDocument.getXObject(WebAuthnUser.CLASS_REFERENCE, true, xcontext));
 
         boolean needUpdate = false;
 
-        if (!StringUtils.equals(user.getUsername(), username)) {
-            user.setUsername(username);
-            needUpdate = true;
-        }
-
-        if (!StringUtils.equals(user.getUserhandle(), userhandle)) {
-            user.setUserhandle(userhandle);
-            needUpdate = true;
-        }
 
         if (!StringUtils.equals(user.getCredentialId(), credentialId)) {
             user.setCredentialId(credentialId);
@@ -102,8 +93,8 @@ public class WebAuthnUserStore
             needUpdate = true;
         }
 
-        if (!StringUtils.equals(user.getSignatureCount(), signatureCount)) {
-            user.setSignatureCount(signatureCount);
+        if (!StringUtils.equals(user.getSignatureCount(), sc)) {
+            user.setSignatureCount(sc);
             needUpdate = true;
         }
 
@@ -113,26 +104,21 @@ public class WebAuthnUserStore
     /**
      * Search in the existing XWiki user if one already has WebAuthn credentials associated with them
      *
-     * @param username the WebAuthn user's username.
-     * @param userhandle the WebAuthn user's userhandle.
      * @param credentialId the WebAuthn user's credentialId.
      * @param userId the WebAuthn user's userId.
-     * @param publicKeyCose the WebAuthn user's publicKeyCose.
      * @param signatureCount the WebAuthn user's signature count.
      * @return the document of the user profile which already contains theses WebAuthn credentials
      * @throws XWikiException when failing the get the document
      * @throws QueryException when failing to search for the document
      */
-    public XWikiDocument searchDocument(String username, String userhandle, String credentialId, String userId,
-        String publicKeyCose, String signatureCount) throws XWikiException, QueryException
+    public XWikiDocument searchDocument(String credentialId, String userId, String publicKeyCose,
+        int signatureCount) throws XWikiException, QueryException
     {
         Query query = this.queries.createQuery("from doc.object(" + WebAuthnUser.CLASS_FULLNAME
-            + ") as webauthn where webauthn.username = :username and webauthn.userhandle = :userhandle and webauthn"
-            + ".credentialId = :credentialId and webauthn.userId = :userId and webauthn.publicKeyCose = "
-            + ":publicKeyCose and webauthn.signatureCount = :signatureCount", Query.XWQL);
+            + ") as webauthn where webauthn.credentialId = :credentialId and webauthn.userId = :userId and "
+            + "webauthn.publicKeyCose = " + ":publicKeyCose and "
+            + "webauthn.signatureCount = :signatureCount", Query.XWQL);
 
-        query.bindValue("username", username);
-        query.bindValue("userhandle", userhandle);
         query.bindValue("credentialId", credentialId);
         query.bindValue("userId", userId);
         query.bindValue("publicKeyCose", publicKeyCose);

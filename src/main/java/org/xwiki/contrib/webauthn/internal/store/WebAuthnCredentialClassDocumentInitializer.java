@@ -50,10 +50,8 @@ public class WebAuthnCredentialClassDocumentInitializer extends AbstractMandator
     @Override
     protected void createClass(BaseClass xclass)
     {
-        xclass.addTextField(WebAuthnUser.FIELD_USERNAME, "Username", 30);
-        xclass.addTextField(WebAuthnUser.FIELD_USERHANDLE, "User Handle", 60);
         xclass.addTextField(WebAuthnUser.FIELD_CREDENTIALID, "Credential ID", 60);
-        xclass.addTextField(WebAuthnUser.FIELD_USERID, "User Handle", 60);
+        xclass.addTextField(WebAuthnUser.FIELD_USERID, "User ID", 60);
         xclass.addTextAreaField(WebAuthnUser.FIELD_PUBLICKEYCOSE, "PublicKeyCOSE", 60, 10);
         xclass.addNumberField(WebAuthnUser.FIELD_SIGNATURECOUNT, "Signature Count", 100, INTEGER);
     }

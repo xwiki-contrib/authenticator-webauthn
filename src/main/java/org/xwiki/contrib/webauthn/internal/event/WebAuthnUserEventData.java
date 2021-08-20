@@ -19,6 +19,83 @@
  */
 package org.xwiki.contrib.webauthn.internal.event;
 
+import com.xpn.xwiki.doc.XWikiDocument;
+import com.yubico.webauthn.RegisteredCredential;
+import com.yubico.webauthn.data.ByteArray;
+import com.yubico.webauthn.data.UserIdentity;
+
+import lombok.Value;
+
+/**
+ * Data sent with WebAuthn related events
+ */
+@Value
 public class WebAuthnUserEventData
 {
+
+    RegisteredCredential credential;
+
+    UserIdentity userIdentity;
+
+    ByteArray publicKeyCose;
+
+    int signatureCount;
+
+    /**
+     * Instantiates a new WebAuthn user event related data.
+     *
+     * @param credential the credential
+     * @param userIdentity the user identity
+     * @param publicKeyCose the public key cose
+     * @param signatureCount the signature count
+     */
+    public WebAuthnUserEventData(RegisteredCredential credential, UserIdentity userIdentity,
+        ByteArray publicKeyCose, int signatureCount)
+    {
+        this.credential = credential;
+        this.userIdentity = userIdentity;
+        this.publicKeyCose = publicKeyCose;
+        this.signatureCount = signatureCount;
+    }
+
+    /**
+     * Gets credential.
+     *
+     * @return the credential
+     */
+    public RegisteredCredential getCredential()
+    {
+        return credential;
+    }
+
+    /**
+     * Gets user identity.
+     *
+     * @return the user identity
+     */
+    public UserIdentity getUserIdentity()
+    {
+        return userIdentity;
+    }
+
+    /**
+     * Gets public key cose.
+     *
+     * @return the public key cose
+     */
+    public ByteArray getPublicKeyCose()
+    {
+        return publicKeyCose;
+    }
+
+    /**
+     * Gets signature count.
+     *
+     * @return the signature count
+     */
+    public int getSignatureCount()
+    {
+        return signatureCount;
+    }
+
 }
