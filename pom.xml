@@ -26,7 +26,7 @@
   <parent>
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>parent-platform</artifactId>
-    <version>11.10</version>
+    <version>11.10-1</version>
   </parent>
 
   <artifactId>authenticator-webauthn</artifactId>
